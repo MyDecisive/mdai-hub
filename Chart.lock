@@ -1,13 +1,13 @@
 dependencies:
 - name: nats
   repository: https://nats-io.github.io/k8s/helm/charts/
-  version: 2.12.3
+  version: 2.12.4
 - name: opentelemetry-operator
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.102.0
+  version: 0.105.1
 - name: kube-prometheus-stack
   repository: https://prometheus-community.github.io/helm-charts
-  version: 81.2.0
+  version: 81.6.2
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
@@ -16,7 +16,7 @@ dependencies:
   version: 2.2.4
 - name: greptimedb-standalone
   repository: https://greptimeteam.github.io/helm-charts
-  version: 5.1.2
+  version: 5.1.7
 - name: mdai-operator
   repository: oci://ghcr.io/mydecisive
   version: 0.2.10
@@ -29,10 +29,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-<<<<<<< HEAD
 digest: sha256:615ebf4fa5c1b9e9deaa3363bd4ee6a4f176e09446aa85ec8fa81134bb8a30b8
 generated: "2026-04-24T13:28:12.966034-04:00"
-=======
-digest: sha256:9e8c276a0632854b153b36b30f43e28e7451e6945dcfcfb809bdf72bea42fc36
-generated: "2026-02-11T11:53:35.258398-07:00"
->>>>>>> 5a52f03 (chore: upgrade to latest version of deps)
