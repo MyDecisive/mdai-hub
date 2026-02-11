@@ -1,21 +1,21 @@
 apiVersion: v2
 type: application
 name: mdai-hub
-version: "0.9.0-dev"
+version: "0.9.3-dev"
 description: MDAI Hub helm chart
-appVersion: "0.9.0-dev"
+appVersion: "0.9.3-dev"
 dependencies:
   - name: nats
-    version: 2.12.3
+    version: 2.12.4
     repository: https://nats-io.github.io/k8s/helm/charts/
     condition: nats.enabled
   - name: opentelemetry-operator
-    version: 0.102.0
+    version: 0.105.1
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     condition: opentelemetry-operator.enabled
   - name: kube-prometheus-stack
     alias: kubeprometheusstack
-    version: 81.2.0
+    version: 81.6.2
     repository: https://prometheus-community.github.io/helm-charts
     condition: kubeprometheusstack.enabled
   - name: metrics-server
@@ -23,24 +23,24 @@ dependencies:
     repository: https://kubernetes-sigs.github.io/metrics-server
     condition: metrics-server.enabled
   - name: valkey
-    version: 5.1.2
+    version: 5.1.7
     repository: oci://registry-1.docker.io/bitnamicharts
 #    version: 0.9.3
 #    repository: oci://ghcr.io/valkey-io/valkey-helm #/valkey
     condition: valkey.enabled
   - name: mdai-operator
     version: 0.2.10
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     condition: mdai-operator.enabled
   - name: mdai-gateway
     version: 0.1.5
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     condition: mdai-gateway.enabled
   - name: mdai-event-hub
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     version: 0.1.8
     condition: mdai-event-hub.enabled
   - name: mdai-s3-logs-reader
     version: 0.0.8
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     condition: mdai-s3-logs-reader.enabled
