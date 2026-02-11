@@ -128,11 +128,11 @@ helm-package:
 	@helm package -u --version $(CHART_VERSION) --app-version $(CHART_VERSION) $(CHART_DIR) > /dev/null
 
 helm-publish: CHART_NAME := $(REPO_NAME)
-helm-publish: CHART_REPO := git@github.com:MyDecisive/mdai-hub.git
+helm-publish: CHART_REPO := git@github.com:MyDecisive/mdai-helm-charts.git
 helm-publish: CHART_PACKAGE := $(CHART_NAME)-$(CHART_VERSION).tgz
 helm-publish: BASE_BRANCH := gh-pages
 helm-publish: TARGET_BRANCH := $(CHART_NAME)-v$(CHART_VERSION)
-helm-publish: CLONE_DIR := $(shell mktemp -d /tmp/mdai-hub.XXXXXX)
+helm-publish: CLONE_DIR := $(shell mktemp -d /tmp/mdai-helm-charts.XXXXXX)
 helm-publish: REPO_DIR := $(shell pwd)
 helm-publish: helm-package
 	@echo "🚀 Cloning $(CHART_REPO)..."

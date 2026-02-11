@@ -27,4 +27,4 @@ dependencies:
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
 digest: sha256:9e8c276a0632854b153b36b30f43e28e7451e6945dcfcfb809bdf72bea42fc36
-generated: "2026-02-11T14:07:26.573509-06:00"
+generated: "2026-02-11T11:53:35.258398-07:00"
