@@ -15,16 +15,16 @@ dependencies:
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 2.2.4
 - name: mdai-operator
-  repository: oci://ghcr.io/decisiveai
+  repository: oci://ghcr.io/mydecisive
   version: 0.2.9
 - name: mdai-gateway
-  repository: oci://ghcr.io/decisiveai
+  repository: oci://ghcr.io/mydecisive
   version: 0.1.5
 - name: mdai-event-hub
-  repository: oci://ghcr.io/decisiveai
+  repository: oci://ghcr.io/mydecisive
   version: 0.1.8
 - name: mdai-s3-logs-reader
-  repository: oci://ghcr.io/decisiveai
+  repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-digest: sha256:081569185afd3a6cfff2054c7d8017c55f08b0c56f36e4eff79419e66b02ec7d
-generated: "2025-12-02T11:46:55.702455-06:00"
+digest: sha256:9e8c276a0632854b153b36b30f43e28e7451e6945dcfcfb809bdf72bea42fc36
+generated: "2026-02-11T11:53:35.258398-07:00"
