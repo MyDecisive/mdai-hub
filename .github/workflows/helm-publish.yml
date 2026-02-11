@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   helm-publish:
-    uses: DecisiveAI/ci/.github/workflows/helm-publish.yml@main
+    uses: MyDecisive/ci/.github/workflows/helm-publish.yml@main
     secrets:
       SLACK_NOTIFY_URL: ${{ secrets.SLACK_NOTIFY_URL }}
