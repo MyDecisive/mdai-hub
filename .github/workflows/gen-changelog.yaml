@@ -19,7 +19,7 @@ jobs:
         with:
           tool: git-cliff@2.10.1
       - name: Install Composite Changelog Tool
-        run: go install github.com/DecisiveAI/changelogs/scripts/composite@latest
+        run: go install github.com/MyDecisive/changelogs/scripts/composite@latest
       - name: Generate Token
         uses: actions/create-github-app-token@v2
         id: app-token

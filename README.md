@@ -14,7 +14,7 @@ _After initial checkout, switching branches or modifying `Chart.yaml`, run `helm
 ## Install MDAI Hub helm chart
 ```bash
 helm upgrade --install \
-  mdai oci://ghcr.io/decisiveai/mdai-hub \
+  mdai oci://ghcr.io/mydecisive/mdai-hub \
   --namespace mdai \
   --create-namespace \
   --cleanup-on-fail \

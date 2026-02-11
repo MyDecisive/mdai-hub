@@ -28,17 +28,17 @@ dependencies:
     condition: valkey.enabled
   - name: mdai-operator
     version: 0.2.9
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     condition: mdai-operator.enabled
   - name: mdai-gateway
     version: 0.1.5
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     condition: mdai-gateway.enabled
   - name: mdai-event-hub
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     version: 0.1.8
     condition: mdai-event-hub.enabled
   - name: mdai-s3-logs-reader
     version: 0.0.8
-    repository: oci://ghcr.io/decisiveai
+    repository: oci://ghcr.io/mydecisive
     condition: mdai-s3-logs-reader.enabled
