@@ -457,88 +457,72 @@ valkey:
   image:
     registry: public.ecr.aws
     repository: decisiveai/valkey
-    tag: 1.0.2
+    tag: 9.0.1
   auth:
     enabled: true
-    existingSecret: valkey-secret
-    existingSecretPasswordKey: VALKEY_PASSWORD
-  global:
-    security:
-      allowInsecureImages: true
-  primary:
-    ## uncomment below block to enable persistent storage
-    ## BEGIN: persistent storage block
-    #nodeSelector:
-    #  topology.kubernetes.io/zone: us-east-1a
-    #initContainers:
-    #- command:
-    #  - /bin/chown
-    #  - -R
-    #  - 1001:1001
-    #  - /data
-    #  image: busybox
-    #  name: valkey-data-permission-setup
-    #  securityContext:
-    #    runAsGroup: 0
-    #    runAsNonRoot: false
-    #    runAsUser: 0
-    #  volumeMounts:
-    #  - mountPath: /data
-    #    name: valkey-data
-    ## END: persistent storage block
-    replicaCount: 1
-    persistence:
-      enabled: false
-      ## uncomment below block to enable persistent storage
-      ## BEGIN: persistent storage block
-      #enabled: true
-      #size: 10Gi
-      #existingClaim: pvc-valkey
-      ## END: persistent storage block
-    disableCommands:
-      - FLUSHDB
-      - FLUSHALL
-    configuration: |-
-      notify-keyspace-events KEA
-      enable-module-command yes
-      loadmodule /opt/bitnami/valkey/modules/priority_list.so
-      loadmodule /opt/bitnami/valkey/modules/hashset.so
-    service:
-      type: ClusterIP
-      ports:
-        valkey: 6379
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "100m"
-      limits:
-        memory: "128Mi"
-        cpu: "200m"
-    tolerations: []
+    aclUsers:
+      default:
+        permissions: "~* &* +@all"
+        passwordKey: "VALKEY_PASSWORD"      # Key in usersExistingSecret (defaults to username)
+    usersExistingSecret: valkey-secret
+  service:
+    type: ClusterIP
+    port: 6379
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
+  tolerations: []
+  ## uncomment below block to enable persistent storage
+  ## BEGIN: persistent storage block
+  #nodeSelector:
+  #  topology.kubernetes.io/zone: us-east-1a
+  #extraInitContainers:
+  #- command:
+  #  - /bin/chown
+  #  - -R
+  #  - 1001:1001
+  #  - /data
+  #  image: busybox
+  #  name: valkey-data-permission-setup
+  #  securityContext:
+  #    runAsGroup: 0
+  #    runAsNonRoot: false
+  #    runAsUser: 0
+  #  volumeMounts:
+  #  - mountPath: /data
+  #    name: valkey-data
+  #dataStorage:
+  #  enabled: true
+  #  requestedSize: 10Gi
+  #  persistentVolumeClaimName: pvc-valkey
+  ## END: persistent storage block
+  dataStorage:
+    enabled: false
   replica:
-    configuration: |-
-      notify-keyspace-events KEA
-      enable-module-command yes
-      loadmodule /opt/bitnami/valkey/modules/priority_list.so
-      loadmodule /opt/bitnami/valkey/modules/hashset.so
-    replicaCount: 0
-    persistence:
-      enabled: false
-    disableCommands:
-      - FLUSHDB
-      - FLUSHALL
+    enabled: false
+    replicas: 0
+    replicationUser: "default"
+    disklessSync: false
+    minReplicasToWrite: 0
+    minReplicasMaxLag: 10
     service:
+      enabled: true
       type: ClusterIP
-      ports:
-        valkey: 6379
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "100m"
-      limits:
-        memory: "128Mi"
-        cpu: "200m"
-    tolerations: []
+      port: 6379
+      annotations: {}
+      nodePort: 0
+      clusterIP: ""
+      appProtocol: ""
+      loadBalancerClass: ""
+    persistence:
+      size: ""
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
 
 # default NATS setup is very minimal and aim at saving resources and ensuring basic functionality.
 # adjust according to your specific needs.

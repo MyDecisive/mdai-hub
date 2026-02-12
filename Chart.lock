@@ -12,8 +12,8 @@ dependencies:
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
 - name: valkey
-  repository: oci://registry-1.docker.io/bitnamicharts
-  version: 5.1.7
+  repository: oci://ghcr.io/valkey-io/valkey-helm
+  version: 0.9.3
 - name: mdai-operator
   repository: oci://ghcr.io/mydecisive
   version: 0.2.10
@@ -26,5 +26,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-digest: sha256:3316b14900d3844bcc68859de4b5edc46ae3acdd7630254b4bbcf54fbd9fa2b0
-generated: "2026-02-11T14:20:47.956733-07:00"
+digest: sha256:b0af639ed01cc889d483d93dcd84e869ac2e4ef07d192adc95d38a6304e8a982
+generated: "2026-02-11T18:36:22.167312-07:00"
