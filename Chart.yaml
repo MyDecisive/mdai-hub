@@ -23,8 +23,8 @@ dependencies:
     repository: https://kubernetes-sigs.github.io/metrics-server
     condition: metrics-server.enabled
   - name: valkey
-    version: 5.1.7
-    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 0.9.3
+    repository: oci://ghcr.io/valkey-io/valkey-helm
     condition: valkey.enabled
   - name: greptimedb-standalone
     version: 0.3.5
@@ -45,6 +45,7 @@ dependencies:
   - name: mdai-s3-logs-reader
     version: 0.0.8
     repository: oci://ghcr.io/mydecisive
+    condition: mdai-s3-logs-reader.enabled
     condition: mdai-s3-logs-reader.enabled
   - name: mdai-tracealyzer
     version: 0.1.0
