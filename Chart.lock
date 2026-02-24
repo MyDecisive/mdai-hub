@@ -14,6 +14,18 @@ dependencies:
 - name: valkey
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 2.2.4
+- name: greptimedb-standalone
+  repository: https://greptimeteam.github.io/helm-charts
+  version: 0.3.5
+- name: greptimedb-operator
+  repository: https://greptimeteam.github.io/helm-charts
+  version: 0.5.8
+- name: etcd
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 12.0.8
+- name: greptimedb-cluster
+  repository: https://greptimeteam.github.io/helm-charts
+  version: 0.7.9
 - name: mdai-operator
   repository: oci://ghcr.io/mydecisive
   version: 0.2.9
@@ -26,5 +38,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-digest: sha256:9e8c276a0632854b153b36b30f43e28e7451e6945dcfcfb809bdf72bea42fc36
-generated: "2026-02-11T11:53:35.258398-07:00"
+digest: sha256:25b09f99dc6f9c620be581f0b873c02e7d3fcfb879e8fc7e2f3755b7adf4c741
+generated: "2026-02-24T17:15:04.264044-05:00"
