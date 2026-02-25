@@ -623,10 +623,30 @@ cleanup:
   tolerations: []
 
 greptimedb-standalone:
-  enabled: false
+  enabled: true
+  # AWS S3 Object storage
+  objectStorage:
+    s3:
+      bucket: mdai-greptime-object-storage
+      endpoint: s3.us-east-2.amazonaws.com
+      region: us-east-2
+      root: ""
+  persistence:
+    storageClass: ""
+    selector:
+      matchLabels:
+        app: greptime-standalone
+        env: mdai
+    size: 20Gi
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
+    create: true
+    name: greptimedb-standalone
+  # AWS S3 Object storage
 
 greptimedb-cluster:
-  enabled: true
+  enabled: false
   meta:
     backendStorage:
       etcd:
