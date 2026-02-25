@@ -632,7 +632,7 @@ greptimedb-standalone:
       region: us-east-2
       root: ""
   persistence:
-    storageClass: ""
+    storageClass: greptime-wal
     selector:
       matchLabels:
         app: greptime-standalone
