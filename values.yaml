@@ -624,24 +624,22 @@ cleanup:
 
 greptimedb-standalone:
   enabled: false
-  objectStorage:
-    s3:
-      bucket: mdai-greptime-object-storage
-      endpoint: s3.us-east-2.amazonaws.com
-      region: us-east-2
-      root: ""
-  persistence:
-    storageClass: gp2
-    selector:
-      matchLabels:
-        app: mdai-greptime
-        env: mdai
-    size: 20Gi
-  serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
-    create: true
-    name: greptimedb-standalone
+## AWS start
+#  objectStorage:
+#    s3:
+#      bucket: mdai-greptime-object-storage
+#      endpoint: s3.us-east-2.amazonaws.com
+#      region: us-east-2
+#      root: ""
+#  persistence:
+#    storageClass: gp2
+#    size: 20Gi
+#  serviceAccount:
+#    annotations:
+#      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
+#    create: true
+#    name: greptimedb-standalone
+## AWS end
 
 greptimedb-cluster:
   enabled: false
@@ -650,23 +648,25 @@ greptimedb-cluster:
       etcd:
         endpoints:
           - mdai-etcd.mdai.svc.cluster.local:2379
-    startupProbe:
+    readinessProbe:
       initialDelaySeconds: 40
-  objectStorage:
-    s3:
-      bucket: mdai-greptime-object-storage
-      endpoint: s3.us-east-2.amazonaws.com
-      region: us-east-2
-      root: ""
-  datanode:
-    storage:
-      storageClassName: gp2
-      size: 20Gi
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
-      create: true
-      name: greptimedb-cluster
+## AWS start
+#  objectStorage:
+#    s3:
+#      bucket: mdai-greptime-object-storage
+#      endpoint: s3.us-east-2.amazonaws.com
+#      region: us-east-2
+#      root: ""
+#  datanode:
+#    storage:
+#      storageClassName: gp2
+#      size: 20Gi
+#    serviceAccount:
+#      annotations:
+#        eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
+#      create: true
+#      name: greptimedb-cluster
+## AWS end
 
 etcd:
   replicaCount: 3
@@ -682,15 +682,15 @@ etcd:
     registry: docker.io
     repository: greptime/etcd
     tag: 3.6.1-debian-12-r3
-  # AWS S3 EBS
-  persistence:
-    enabled: true
-    storageClass: gp2
-    accessModes:
-      - ReadWriteOnce
-    size: 8Gi
-    selector: {}
-  # AWS S3 EBS
+## AWS start
+#  persistence:
+#    enabled: true
+#    storageClass: gp2
+#    accessModes:
+#      - ReadWriteOnce
+#    size: 8Gi
+#    selector: {}
+## AWS end
 
 greptimedb-operator:
   enabled: false

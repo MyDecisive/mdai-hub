@@ -2,34 +2,39 @@
 
 ## Local (Kind) installation
 
+For local install make sure all sections between
+```AWS start``` and ```AWS end``` are commented out
+
 ### Stanadalone
 
-In [values.yaml](./values.yaml) enable greptimedb-standalone:
-```yaml
-greptimedb-standalone:
-  enabled: true
-```
-Make sure greptime-cluster is disabled:
-```yaml
-greptimedb-caluster:
-  enabled: false
+Run:  
+```bash
+helm upgrade --install --namespace mdai --create-namespace --cleanup-on-fail --devel  --set greptimedb-standalone.enabled=true mdai .
 ```
 
 ### Cluster
 
-In [values.yaml](./values.yaml) enable greptimedb-cluster:
-```yaml
-greptimedb-cluster:
-  enabled: true
+Install GreptimeDb operator:  
+```bash
+helm repo add greptime https://greptimeteam.github.io/helm-charts/
+helm repo update
+helm upgrade \
+  --install \
+  --create-namespace \
+  greptimedb-operator greptime/greptimedb-operator \
+  -n mdai
 ```
-Make sure greptime-standalone is disabled:
-```yaml
-greptimedb-standalone:
-  enabled: false
+
+Install MDAI with GreptimeDB:
+```bash
+helm upgrade --install mdai . -n mdai --set greptimedb-cluster.enabled=true
 ```
 
 
 ## AWS EKS installation
+
+For AWS install make sure all sections between
+```AWS start``` and ```AWS end``` are NOT commented out
 
 ### Stanadalone
 
@@ -48,14 +53,10 @@ greptimedb-standalone:
   enabled: true
   persistence:
     storageClass: gp2
-    selector:
-      matchLabels:
-        app: mdai-greptime
-        env: mdai
     size: 20Gi
 ```  
 
-#### <a id="standalone-aws-iam"></a>AWS IAM {#standalone-aws-iam}
+#### <a id="standalone-aws-iam"></a>AWS IAM  
 
 For S3 bucket access create IAM policy `greptime-irsa-mdai-greptime` as follows (make sure bucket name is correct):  
 ```json
@@ -148,10 +149,6 @@ greptimedb-cluster:
       root: ""
   persistence:
     storageClass: gp2
-    selector:
-      matchLabels:
-        app: mdai-greptime
-        env: mdai
     size: 20Gi
   serviceAccount:
     annotations:
