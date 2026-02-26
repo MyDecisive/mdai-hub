@@ -33,7 +33,7 @@ dependencies:
   - name: greptimedb-operator
     version: 0.5.8
     repository: https://greptimeteam.github.io/helm-charts
-    condition: greptimedb-cluster.enabled
+    condition: greptimedb-operator.enabled
   - name: etcd
     version: 12.0.8
     repository: oci://registry-1.docker.io/bitnamicharts

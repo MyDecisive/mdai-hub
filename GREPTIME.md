@@ -15,8 +15,8 @@ greptimedb-caluster:
   enabled: false
 ```
 
-
 ### Cluster
+
 In [values.yaml](./values.yaml) enable greptimedb-cluster:
 ```yaml
 greptimedb-cluster:
@@ -28,60 +28,36 @@ greptimedb-standalone:
   enabled: false
 ```
 
+
 ## AWS EKS installation
 
 ### Stanadalone
 
-### Cluster
+For AWS EKS installation a few preparation steps are required.  
+You need a S3 bucket for object storage and EBS volume for WAL.  
 
-WAL PV:
+#### Storage
+Assume, your S3 bucket is named
+`mdai-greptime-object-storage`  
+
+For EBS volume we strongly recommend volume auto provisioning, provided by EBS CSI driver, as it allows you do not think about availability zones matching.
+
+In [values.yaml](./values.yaml) make sure, that persistence section is not commented out: 
 ```yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  labels:
-    app: greptime-standalone
-    env: mdai
-  name: greptime-wal
-spec:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 20Gi
-  csi:
-    driver: ebs.csi.aws.com
-    volumeHandle: vol-0049215b1cb36596d
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: greptime
-  volumeMode: Filesystem
-```
+greptimedb-standalone:
+  enabled: true
+  persistence:
+    storageClass: gp2
+    selector:
+      matchLabels:
+        app: mdai-greptime
+        env: mdai
+    size: 20Gi
+```  
 
-WAL PVC:
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app.kubernetes.io/instance: mdai
-    app.kubernetes.io/name: greptimedb-standalone
-  name: data-mdai-greptimedb-standalone-0
-  namespace: mdai
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
-  selector:
-    matchLabels:
-      app: greptime-standalone
-      env: mdai
-  storageClassName: greptime
-  volumeMode: Filesystem
-  volumeName: greptime-wal
-```
+#### <a id="standalone-aws-iam"></a>AWS IAM {#standalone-aws-iam}
 
-IAM role (greptime-irsa-mdai-greptime-test):
+For S3 bucket access create IAM policy `greptime-irsa-mdai-greptime` as follows (make sure bucket name is correct):  
 ```json
 {
     "Statement": [
@@ -108,7 +84,7 @@ IAM role (greptime-irsa-mdai-greptime-test):
     "Version": "2012-10-17"
 }
 ```
-Trust policy:
+Attach this policy to IAM role `greptime-s3-mdai-greptime` with the following trust policy:
 ```json
 {
     "Version": "2012-10-17",
@@ -128,43 +104,91 @@ Trust policy:
         }
     ]
 }
-```
+```  
+where  
+`168005146325` - aws account id  
+`us-east-2` - aws region  
+`3B3EC4E13EF381458A69207C78AC56EC` - EKS cluster OIDC provider ID  
+`greptimedb-standalone` - proposed k8s ServiceAccount name for GreptimeDB  
 
-serviceaccount:
-```yaml
-metadata:
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
-```    
+In [values.yaml](./values.yaml) make sure that `serviceAccount` section is not commented out:   
+```json
+greptimedb-standalone:
+  enabled: true
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime
+    create: true
+    name: greptimedb-standalone
+```  
+For the role arn in annotations and sa name add valid values
 
-statefulset:
+
+
+
+### Cluster
+
+For AWS EKS installation a few preparation steps are required.  
+You need a S3 bucket for object storage and EBS volumes for GreptimeDB WAL and etcd.  
+For EBS volume we strongly recommend volume auto provisioning, provided by EBS CSI driver, as it allows you do not think about availability zones matching.  
+
+
+#### Storage
+
+Make sure `greptimedb-cluster.objectStorage`,  `greptimedb-cluster.persistence`, `greptimedb-cluster.serviceAccount` and `etcd.persistence` section is not commented out in [values.yaml](./values.yaml)  
+
 ```yaml
-volumeClaimTemplates:
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    name: data
-  spec:
+greptimedb-cluster:
+  # AWS start
+  objectStorage:
+    s3:
+      bucket: mdai-greptime-object-storage
+      endpoint: s3.us-east-2.amazonaws.com
+      region: us-east-2
+      root: ""
+  persistence:
+    storageClass: gp2
+    selector:
+      matchLabels:
+        app: mdai-greptime
+        env: mdai
+    size: 20Gi
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
+    create: true
+    name: greptimedb-cluster
+  # AWS end
+
+etcd:
+  # AWS start
+  persistence:
+    enabled: true
+    storageClass: gp2
     accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 20Gi
-    volumeMode: Filesystem 
+      - ReadWriteOnce
+    size: 8Gi
+  # AWS end
+ ```
+ 
+ #### AWS IAM
+ 
+ Needed steps described in [Standalone/AWS/IAM](#standalone-aws-iam) section.
+ 
+ #### Install
+ 
+Install GreptimeDb operator:  
+```bash
+helm repo add greptime https://greptimeteam.github.io/helm-charts/
+helm repo update
+helm upgrade \
+  --install \
+  --create-namespace \
+  greptimedb-operator greptime/greptimedb-operator \
+  -n mdai
 ```
 
-helm:
-```yaml
-objectStorage:
-  s3:
-    bucket: mdai-greptime-object-storage
-    endpoint: s3.us-east-2.amazonaws.com
-    region: us-east-2
-    root: ""
-serviceAccount:
-  annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
-  create: true
-  name: greptimedb-standalone
+Install MDAI with GreptimeDB:
+```bash
+helm upgrade --install mdai . -n mdai --set greptimedb-cluster.enabled=true
 ```
