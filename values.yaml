@@ -624,7 +624,7 @@ cleanup:
 
 greptimedb-standalone:
   enabled: false
-## AWS start
+  ## AWS start
 #  objectStorage:
 #    s3:
 #      bucket: mdai-greptime-object-storage
@@ -636,7 +636,7 @@ greptimedb-standalone:
 #    size: 20Gi
 #  serviceAccount:
 #    annotations:
-#      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test
+#      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/mdai-greptime-irsa-role
 #    create: true
 #    name: greptimedb-standalone
 ## AWS end
