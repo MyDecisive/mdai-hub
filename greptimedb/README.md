@@ -46,9 +46,9 @@ Terraform script returns the following output variables values:
 ```
 bucket_arn = "arn:aws:s3:::mdai-greptime-object-storage"
 bucket_name = "mdai-greptime-object-storage"
-effective_aws_account_id = "168005146325"
-iam_policy_arn = "arn:aws:iam::168005146325:policy/mdai-greptime-s3-policy"
-iam_role_arn = "arn:aws:iam::168005146325:role/mdai-greptime-irsa-role"
+effective_aws_account_id = "123456789012"
+iam_policy_arn = "arn:aws:iam::123456789012:policy/mdai-greptime-s3-policy"
+iam_role_arn = "arn:aws:iam::123456789012:role/mdai-greptime-irsa-role"
 ```  
 
 
@@ -70,7 +70,7 @@ greptimedb-standalone:
     size: 20Gi # <- bucket_size_gb
   serviceAccount:
     annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/mdai-greptime-irsa-role # <- iam_role_arn
+      eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/mdai-greptime-irsa-role # <- iam_role_arn
     create: true
     name: greptimedb-standalone
 ## AWS end
@@ -112,7 +112,7 @@ greptimedb-cluster:
       size: 20G # <- ibucket_size_gb
     serviceAccount:
       annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/greptime-irsa-mdai-greptime-test # <- iam_role_arn
+        eks.amazonaws.com/role-arn: arn:aws:iam::1234556789012:role/greptime-irsa-mdai-greptime-test # <- iam_role_arn
       create: true
       name: greptimedb-cluster
 ## AWS end
