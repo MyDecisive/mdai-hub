@@ -10,13 +10,13 @@ dependencies:
     repository: https://nats-io.github.io/k8s/helm/charts/
     condition: nats.enabled
   - name: opentelemetry-operator
-    version: 0.105.1
+    version: 0.106.0
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     condition: opentelemetry-operator.enabled
   - name: kube-prometheus-stack
     alias: kubeprometheusstack
-    version: 81.6.2
-    repository: https://prometheus-community.github.io/helm-charts
+    version: 82.6.0
+    repository: oci://ghcr.io/prometheus-community/charts
     condition: kubeprometheusstack.enabled
   - name: metrics-server
     version: 3.13.0
