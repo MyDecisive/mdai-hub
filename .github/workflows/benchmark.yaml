@@ -26,7 +26,7 @@ jobs:
     - name: Trigger Benchmarks
       env:
         TAG: ${{ github.event.release.tag_name }}
-        ENDPOINT: ${{ secrets.BENCHMARK_ENDPOINT }}
+        ENDPOINT: ${{ secrets.QUEUE_ALL_PREDEFINED_ENDPOINT }}
       run: |
         latest_tag=$(
             curl -L \
