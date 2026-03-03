@@ -29,13 +29,8 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-<<<<<<< HEAD
 - name: mdai-tracealyzer
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
 digest: sha256:7447f395dd65e0a7a7882d133843238f89f2a3371ac9f9e77f36148eee55c800
 generated: "2026-05-05T14:49:31.456785-04:00"
-=======
-digest: sha256:615ebf4fa5c1b9e9deaa3363bd4ee6a4f176e09446aa85ec8fa81134bb8a30b8
-generated: "2026-04-24T13:28:12.966034-04:00"
->>>>>>> 877fe59 (chore: disable grafana)
