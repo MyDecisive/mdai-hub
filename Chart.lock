@@ -4,10 +4,10 @@ dependencies:
   version: 2.12.4
 - name: opentelemetry-operator
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.105.1
+  version: 0.106.0
 - name: kube-prometheus-stack
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 81.6.2
+  repository: oci://ghcr.io/prometheus-community/charts
+  version: 82.6.0
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
@@ -26,5 +26,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-digest: sha256:b0af639ed01cc889d483d93dcd84e869ac2e4ef07d192adc95d38a6304e8a982
-generated: "2026-02-11T18:36:22.167312-07:00"
+digest: sha256:77bc2dbc8d0dfb028062d35c5bd887c33e04e4b1d43ecf876e76cd0c2bb8ddbf
+generated: "2026-03-03T10:53:26.746453-07:00"
