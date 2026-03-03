@@ -29,5 +29,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-digest: sha256:615ebf4fa5c1b9e9deaa3363bd4ee6a4f176e09446aa85ec8fa81134bb8a30b8
-generated: "2026-04-24T13:28:12.966034-04:00"
+digest: sha256:f64399494a905fd8364d2c91d38fd98c3b14327f3c8b052345c293a4b0150297
+generated: "2026-05-04T17:54:32.972071-07:00"
