@@ -122,12 +122,11 @@ greptimedb-cluster:
  
 Install GreptimeDb operator:  
 ```bash
-helm repo add greptime https://greptimeteam.github.io/helm-charts/
-helm repo update
 helm upgrade \
   --install \
   --create-namespace \
   greptimedb-operator greptime/greptimedb-operator \
+  --repo https://greptimeteam.github.io/helm-charts/ \
   -n mdai
 ```
 
