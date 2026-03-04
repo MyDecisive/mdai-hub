@@ -1,0 +1,46 @@
+name: Benchmark
+
+on:
+  release:
+    types: [released]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Install OIDC Client from Core Package
+      run: npm install @actions/core@1.6.0 @actions/http-client
+    - name: Get IDToken
+      uses: actions/github-script@v8
+      id: token
+      with:
+        script: |
+          const script = require('@actions/core')
+          const id_token = await script.getIDToken()
+          return id_token;
+        result-encoding: string
+    - name: Get Latest Release Tag
+      uses: actions/github-script@v8
+      id: latest
+      with:
+        script: |
+          const response = await github.rest.repos.getLatestRelease({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+          return response.data.tag_name;
+    - name: Trigger Benchmarks
+      env:
+        TAG: ${{ github.event.release.tag_name }}
+        ENDPOINT: ${{ secrets.QUEUE_ALL_PREDEFINED_ENDPOINT }}
+      run: |
+        if [[ "${{ steps.latest.outputs.result }}" == "${TAG}" ]]; then
+          echo "Trigger benchmark runs"
+          curl --fail-with-body -H "Authorization: Bearer ${{ steps.token.outputs.result }}" -H "Content-Type: application/json" -d "{\"mdai_version\": \"${TAG#v}\",\"type\": \"PREDEFINED_TYPE_BENCHMARK\"}" $ENDPOINT
+        else
+          echo "Ignored because this is not the latest release"
+        fi
