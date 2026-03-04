@@ -18,12 +18,11 @@ helm upgrade --install --namespace mdai --create-namespace --cleanup-on-fail --d
 
 Install GreptimeDb operator:  
 ```bash
-helm repo add greptime https://greptimeteam.github.io/helm-charts/
-helm repo update
 helm upgrade \
   --install \
   --create-namespace \
-  greptimedb-operator greptime/greptimedb-operator \
+  greptimedb-operator greptimedb-operator \
+  --repo https://greptimeteam.github.io/helm-charts/ \
   -n mdai
 ```
 
