@@ -23,20 +23,22 @@ jobs:
           const id_token = await script.getIDToken()
           return id_token;
         result-encoding: string
+    - name: Get Latest Release Tag
+      uses: actions/github-script@v8
+      id: latest
+      with:
+        script: |
+          const response = await github.rest.repos.getLatestRelease({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+          return response.data.tag_name;
     - name: Trigger Benchmarks
       env:
         TAG: ${{ github.event.release.tag_name }}
         ENDPOINT: ${{ secrets.QUEUE_ALL_PREDEFINED_ENDPOINT }}
       run: |
-        latest_tag=$(
-            curl -L \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${{ github.token }}" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              https://api.github.com/repos/${{ github.repository }}/releases/latest \
-              | jq -r '.tag_name'
-        )
-        if [[ "${latest_tag}" == "${TAG}" ]]; then
+        if [[ "${{ steps.latest.outputs.result }}" == "${TAG}" ]]; then
           echo "Trigger benchmark runs"
           curl --fail-with-body -H "Authorization: Bearer ${{ steps.token.outputs.result }}" -H "Content-Type: application/json" -d "{\"mdai_version\": \"${TAG#v}\",\"type\": \"PREDEFINED_TYPE_BENCHMARK\"}" $ENDPOINT
         else
