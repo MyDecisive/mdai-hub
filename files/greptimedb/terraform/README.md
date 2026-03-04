@@ -37,7 +37,7 @@ Optional:
 ## Usage
 ```bash
 # Do not run terraform inside Helm chart directory! Copy it over somewhere!
-cp -r greptimedb/terraform /somewhere
+cp -r terraform /somewhere
 cd /somewhere
 cp terraform.tfvars.example terraform.tfvars
 
@@ -55,7 +55,7 @@ bucket_size_gb                = 100
 iam_policy_name               = "mdai-greptime-s3-policy"
 iam_role_name                 = "mdai-greptime-irsa-role"
 # aws_account_id              = "123456789012" # optional
-eks_oidc_provider_id          = "3B3EC4E13EF381458A69207C78AC56EC"
+eks_oidc_provider_id          = "XXXXXXXXXXXXXXXXXXXXXXXX"
 k8s_service_account_namespace = "mdai"
 k8s_service_account_name      = "greptimedb-standalone"
 ```

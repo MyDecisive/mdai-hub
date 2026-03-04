@@ -11,7 +11,14 @@ For local install make sure all sections between
 
 Run:  
 ```bash
-helm upgrade --install --namespace mdai --create-namespace --cleanup-on-fail --devel  --set greptimedb-standalone.enabled=true mdai .
+helm upgrade \
+  --install \
+  --namespace mdai \
+  --create-namespace \
+  --cleanup-on-fail \
+  --devel \ 
+  --values values.greptimedb.yaml \
+  --set greptimedb-standalone.enabled=true mdai .
 ```  
 
 ### Cluster
@@ -23,14 +30,22 @@ helm upgrade \
   --create-namespace \
   greptimedb-operator greptimedb-operator \
   --repo https://greptimeteam.github.io/helm-charts/ \
-  -n mdai
+  -namespace mdai
 ```
 
 Install MDAI with GreptimeDB:
-```bash
-helm upgrade --install mdai . -n mdai --set greptimedb-cluster.enabled=true
-```  
 
+```bash
+helm upgrade \
+  --install \
+  --namespace mdai \
+  --create-namespace \
+  --cleanup-on-fail \
+  --devel \ 
+  --values values.greptimedb.yaml \
+  --set greptimedb-cluster.enabled=true \
+   mdai .
+```  
 
 ## AWS EKS installation
 
@@ -38,8 +53,8 @@ Make sure all sections between
 ```AWS start``` and ```AWS end``` are NOT commented out
 
 For AWS EKS installation S3 bucket and IAM role need to be created.    
-[./terraform](./terraform) directory contains Terraform scripts that will create necessary aws resources.
-Please refer to [README](./terraform/README.md) for details.  
+[./greptimedb/terraform](./greptimedb/terraform) directory contains Terraform scripts that will create necessary aws resources.
+Please refer to [README](./greptimedb/terraform/README.md) for details.  
 
 Terraform script returns the following output variables values:  
 ```
@@ -53,7 +68,7 @@ iam_role_arn = "arn:aws:iam::123456789012:role/mdai-greptime-irsa-role"
 
 ### Stanadalone
 
-Use terraform variables (input & output) values in [values.yaml](./values.yaml):
+Use terraform variables (input & output) values in [values.greptimedb.yaml](./values.greptimedb.yaml):
 ```yaml
 greptimedb-standalone:
   enabled: false
@@ -87,7 +102,7 @@ helm upgrade --install --namespace mdai --create-namespace --cleanup-on-fail --d
 
 ### Cluster
 
-Use terraform variables (input & output) values in [values.yaml](./values.yaml):  
+Use terraform variables (input & output) values in [values.greptimedb.yaml](./values.greptimedb.yaml):  
 ```yaml
 greptimedb-cluster:
   enabled: false
