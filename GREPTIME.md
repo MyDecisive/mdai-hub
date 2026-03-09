@@ -17,7 +17,7 @@ helm upgrade \
   --create-namespace \
   --cleanup-on-fail \
   --devel \ 
-  --values values.greptimedb.yaml \
+  --values greptimedb-values.yaml \
   --set greptimedb-standalone.enabled=true mdai .
 ```  
 
@@ -42,7 +42,7 @@ helm upgrade \
   --create-namespace \
   --cleanup-on-fail \
   --devel \ 
-  --values values.greptimedb.yaml \
+  --values greptimedb-values.yaml \
   --set greptimedb-cluster.enabled=true \
    mdai .
 ```  
@@ -145,7 +145,13 @@ helm upgrade \
   -n mdai
 ```
 
-Install MDAI with GreptimeDB:
 ```bash
-helm upgrade --install mdai . -n mdai --set greptimedb-cluster.enabled=true
+helm upgrade \
+  --install \
+  --namespace mdai \
+  --create-namespace \
+  --cleanup-on-fail \
+  --devel \ 
+  --values greptimedb-values.yaml \
+  --set greptimedb-cluster.enabled=true mdai .
 ```
