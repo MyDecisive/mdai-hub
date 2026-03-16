@@ -225,6 +225,12 @@ kubeprometheusstack:
       selfMonitor: false
     tolerations: []
   prometheus:
+    serviceAccount:
+      create: true
+      name: mdai-prometheus-thanos
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/mdai-thanos-irsa-role
+
     serviceMonitor:
       selfMonitor: false
     additionalServiceMonitors:
@@ -242,7 +248,25 @@ kubeprometheusstack:
       externalLabels:
         cluster: mdai-cluster
       serviceMonitorSelectorNilUsesHelmValues: false
+      thanos:
+        logLevel: debug
+        image: quay.io/thanos/thanos:v0.41.0
+        objectStorageConfig:
+          # existingSecret:
+          #   key: "thanos.yaml"
+          #   name: thanos-objstore-config
+          secret:
+            type: S3
+            config:
+              bucket: mdai-thanos-object-storage
+              endpoint: s3.us-east-2.amazonaws.com
+              region: us-east-2
+              aws_sdk_auth: true
+              signature_version2: false
+              bucket_lookup_type: virtual-hosted
+
       tolerations: []
+
       ## uncomment below block to enable persistent storage
       ## BEGIN: persistent storage block
       #nodeSelector:
@@ -580,8 +604,8 @@ nats:
         # Uncomment a section below to enable PVCs created
         #  dir: "/data/jetstream"
         pvc:
-          #          enabled: true
-          #          storageClassName: "mdai"  # Specify your storage class
+          enabled: true
+          storageClassName: gp2
           #          size: 1Gi # Specify your storage size
           merge: # Add apiVersion/kind to avoid ArgoCD drift on implicit fields
             apiVersion: v1
@@ -621,3 +645,12 @@ crdMetadata:
 
 cleanup:
   tolerations: []
+
+greptimedb-standalone:
+  enabled: false
+
+greptimedb-cluster:
+  enabled: false
+
+greptimedb-operator:
+  enabled: false

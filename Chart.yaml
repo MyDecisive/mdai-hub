@@ -58,3 +58,7 @@ dependencies:
     version: 0.0.8
     repository: oci://ghcr.io/mydecisive
     condition: mdai-s3-logs-reader.enabled
+  - name: thanos
+    version: 17.3.1
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: thanos.enabled

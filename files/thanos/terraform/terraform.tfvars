@@ -1,0 +1,9 @@
+aws_region                    = "us-east-2"
+bucket_name                   = "mdai-thanos-object-storage"
+bucket_size_gb                = 20
+iam_policy_name               = "mdai-thanos-s3-policy"
+iam_role_name                 = "mdai-thanos-irsa-role"
+# aws_account_id              = "123456789012" # optional, defaults to current caller account
+eks_oidc_provider_id          = "3B3EC4E13EF381458A69207C78AC56EC"
+k8s_service_account_namespace = "mdai"
+k8s_service_account_name      = "mdai-prometheus-thanos"
