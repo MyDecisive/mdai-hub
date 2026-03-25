@@ -12,7 +12,7 @@ persistentStorage:
     pv:
       # Specifies whether a PersistentVolumes should be created
       create: false
-      # Deployment platform: can be either "aws" or "kind" (for local development))
+      # Deployment platform: can be either "aws" or "kind" (for local development)
       platform: kind
       # directory where data will be stored if deployment platform is "kind"
       localPath: "/Users/username/kind/data"
@@ -44,10 +44,10 @@ opentelemetry-operator:
   manager:
     image:
       repository: ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator
-      tag: 0.131.0
+      tag: 0.147.0
     collectorImage:
       repository: otel/opentelemetry-collector-contrib
-      tag: 0.131.0
+      tag: 0.147.0
     leaderElection:
       enabled: false
     env:
@@ -331,6 +331,19 @@ kubeprometheusstack:
               separator: ;
               regex: hub-monitor-mdai-collector;8899
               action: keep
+        - job_name: mdai-fidelity-validator
+          honor_labels: true
+          kubernetes_sd_configs:
+            - role: pod
+              namespaces:
+                names: ["mdai"]
+          relabel_configs:
+            - source_labels: [__meta_kubernetes_pod_label_app, __meta_kubernetes_pod_container_port_number]
+              separator: ;
+              regex: mdai-fidelity-validator;8080
+              action: keep
+            - target_label: __metrics_path__
+              replacement: /metrics
   additionalPrometheusRulesMap:
     mdai-rules:
       groups:
@@ -586,3 +599,17 @@ crdMetadata:
 
 cleanup:
   tolerations: []
+
+envoy:
+  enabled: true
+  xds:
+    enabled: true
+    serverAddress: mdai-operator-xds-service.mdai.svc.cluster.local
+    serverPort: 18000
+    nodeId: envoy-hub-proxy
+    clusterName: mdai-hub
+
+
+mdaifidelityvalidator:
+  enabled:
+    true
