@@ -1,20 +1,33 @@
 greptimedb-standalone:
   enabled: false
+  fullnameOverride: mdai-greptimedb
+  extraVolumeMounts:
+    - mountPath: /etc/greptimedb/auth
+      name: auth
+      readOnly: true
+  extraVolumes:
+    - name: auth
+      secret:
+        defaultMode: 420
+        secretName: greptimedb-users-auth
+  env:
+    GREPTIMEDB_STANDALONE__USER_PROVIDER: "static_user_provider:file:/etc/greptimedb/auth/passwd"
+  databaseName: mdai
   ## AWS start
-#  objectStorage:
-#    s3:
-#      bucket: mdai-greptime-object-storage
-#      endpoint: s3.us-east-2.amazonaws.com
-#      region: us-east-2
-#      root: ""
-#  persistence:
-#    storageClass: gp2
-#    size: 20Gi
-#  serviceAccount:
-#    annotations:
-#      eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/mdai-greptime-irsa-role
-#    create: true
-#    name: greptimedb-standalone
+  # objectStorage:
+  #   s3:
+  #     bucket: mdai-greptime-object-storage
+  #     endpoint: s3.us-east-2.amazonaws.com
+  #     region: us-east-2
+  #     root: ""
+  # persistence:
+  #   storageClass: gp2
+  #   size: 20Gi
+  # serviceAccount:
+  #   annotations:
+  #     eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/mdai-greptime-irsa-role
+  #   create: true
+  #   name: greptimedb-standalone
 ## AWS end
 
 greptimedb-cluster:

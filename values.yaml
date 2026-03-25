@@ -501,10 +501,19 @@ valkey:
     registry: public.ecr.aws
     repository: decisiveai/valkey
     tag: 1.0.2
-  auth:
-    enabled: true
-    existingSecret: valkey-secret
-    existingSecretPasswordKey: VALKEY_PASSWORD
+  # auth:
+  #   enabled: true
+  #   existingSecret: valkey-secret
+  #   existingSecretPasswordKey: VALKEY_PASSWORD
+  extraVolumeMounts:
+    - mountPath: /etc/greptimedb/auth
+      name: auth
+      readOnly: true
+  extraVolumes:
+    - name: auth
+      secret:
+        defaultMode: 420
+        secretName: greptimedb-users-auth
   global:
     security:
       allowInsecureImages: true
@@ -653,4 +662,7 @@ greptimedb-cluster:
   enabled: false
 
 greptimedb-operator:
+  enabled: false
+
+thanos:
   enabled: false
