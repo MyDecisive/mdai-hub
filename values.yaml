@@ -663,6 +663,3 @@ greptimedb-cluster:
 
 greptimedb-operator:
   enabled: false
-
-thanos:
-  enabled: false
