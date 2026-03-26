@@ -1,13 +1,13 @@
 dependencies:
 - name: nats
   repository: https://nats-io.github.io/k8s/helm/charts/
-  version: 2.12.5
+  version: 2.12.6
 - name: opentelemetry-operator
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.107.1
+  version: 0.109.0
 - name: kube-prometheus-stack
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 82.10.5
+  version: 82.14.1
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
@@ -32,5 +32,5 @@ dependencies:
 - name: mdai-fidelity-validator
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
-digest: sha256:4fccc04bea88a99635523dec80e0f9cfa44750de20aa880dc7edcde2dcfaf6eb
-generated: "2026-03-25T16:08:08.708248-07:00"
+digest: sha256:6284e0a5bbaa78fab1115b203f9f7e529057f043573e53dc0fa58124877dff16
+generated: "2026-03-26T08:48:42.834261-07:00"
