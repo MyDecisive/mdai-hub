@@ -1,13 +1,13 @@
 dependencies:
 - name: nats
   repository: https://nats-io.github.io/k8s/helm/charts/
-  version: 2.12.5
+  version: 2.12.6
 - name: opentelemetry-operator
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.107.1
+  version: 0.109.0
 - name: kube-prometheus-stack
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 82.10.5
+  version: 82.14.1
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
@@ -19,7 +19,7 @@ dependencies:
   version: 5.1.7
 - name: mdai-operator
   repository: oci://ghcr.io/mydecisive/charts
-  version: 0.2.12
+  version: 0.2.12-envoy
 - name: mdai-gateway
   repository: oci://ghcr.io/mydecisive
   version: 0.1.5
@@ -30,6 +30,12 @@ dependencies:
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
 - name: mdai-tracealyzer
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.1.0
+- name: mdai-envoy-standalone
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.1.0
+- name: mdai-fidelity-validator
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
 digest: sha256:7447f395dd65e0a7a7882d133843238f89f2a3371ac9f9e77f36148eee55c800
