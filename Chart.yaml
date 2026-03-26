@@ -31,8 +31,8 @@ dependencies:
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-operator.enabled
   - name: mdai-gateway
-    version: 0.1.5
-    repository: oci://ghcr.io/mydecisive
+    version: 0.1.5-octant
+    repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-gateway.enabled
   - name: mdai-event-hub
     repository: oci://ghcr.io/mydecisive

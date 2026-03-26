@@ -18,8 +18,8 @@ dependencies:
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.2.12-envoy
 - name: mdai-gateway
-  repository: oci://ghcr.io/mydecisive
-  version: 0.1.5
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.1.5-octant
 - name: mdai-event-hub
   repository: oci://ghcr.io/mydecisive
   version: 0.1.8
@@ -32,5 +32,5 @@ dependencies:
 - name: mdai-fidelity-validator
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
-digest: sha256:6284e0a5bbaa78fab1115b203f9f7e529057f043573e53dc0fa58124877dff16
-generated: "2026-03-26T08:48:42.834261-07:00"
+digest: sha256:361c50401834119aac6d1e48be359f5542522d3212047507463b4f28042b2f65
+generated: "2026-03-26T09:13:29.213028-07:00"
