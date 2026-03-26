@@ -9,7 +9,7 @@ PV.md
 USAGE/*
 media/*
 tmpcharts*/*
-mdai-cluster-*.tgz
+mdai-hub-*.tgz
 files/example_collector.yaml
 files/example2_collector.yaml
 example_log_generator.yaml
