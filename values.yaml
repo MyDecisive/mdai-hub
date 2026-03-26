@@ -94,6 +94,9 @@ mdai-gateway:
   deployment:
     annotations: {}
     tolerations: []
+  image:
+    repository: ghcr.io/mydecisive/mdai-gateway
+    tag: 0.1.5-octant
 
 mdai-event-hub:
   enabled: true
