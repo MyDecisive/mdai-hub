@@ -21,8 +21,8 @@ dependencies:
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.2.12-envoy
 - name: mdai-gateway
-  repository: oci://ghcr.io/mydecisive
-  version: 0.1.5
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.1.5-octant
 - name: mdai-event-hub
   repository: oci://ghcr.io/mydecisive
   version: 0.1.8
