@@ -27,7 +27,7 @@ dependencies:
     repository: oci://ghcr.io/valkey-io/valkey-helm
     condition: valkey.enabled
   - name: mdai-operator
-    version: 0.2.12
+    version: 0.2.12-envoy
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-operator.enabled
   - name: mdai-gateway
