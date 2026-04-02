@@ -225,12 +225,6 @@ kubeprometheusstack:
       selfMonitor: false
     tolerations: []
   prometheus:
-    serviceAccount:
-      create: true
-      name: mdai-prometheus-thanos
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::168005146325:role/mdai-thanos-irsa-role
-
     serviceMonitor:
       selfMonitor: false
     additionalServiceMonitors:
@@ -248,23 +242,6 @@ kubeprometheusstack:
       externalLabels:
         cluster: mdai-cluster
       serviceMonitorSelectorNilUsesHelmValues: false
-      thanos:
-        logLevel: debug
-        image: quay.io/thanos/thanos:v0.41.0
-        objectStorageConfig:
-          # existingSecret:
-          #   key: "thanos.yaml"
-          #   name: thanos-objstore-config
-          secret:
-            type: S3
-            config:
-              bucket: mdai-thanos-object-storage
-              endpoint: s3.us-east-2.amazonaws.com
-              region: us-east-2
-              aws_sdk_auth: true
-              signature_version2: false
-              bucket_lookup_type: virtual-hosted
-
       tolerations: []
 
       ## uncomment below block to enable persistent storage
@@ -501,19 +478,10 @@ valkey:
     registry: public.ecr.aws
     repository: decisiveai/valkey
     tag: 1.0.2
-  # auth:
-  #   enabled: true
-  #   existingSecret: valkey-secret
-  #   existingSecretPasswordKey: VALKEY_PASSWORD
-  extraVolumeMounts:
-    - mountPath: /etc/greptimedb/auth
-      name: auth
-      readOnly: true
-  extraVolumes:
-    - name: auth
-      secret:
-        defaultMode: 420
-        secretName: greptimedb-users-auth
+  auth:
+     enabled: true
+     existingSecret: valkey-secret
+     existingSecretPasswordKey: VALKEY_PASSWORD
   global:
     security:
       allowInsecureImages: true

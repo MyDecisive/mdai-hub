@@ -1,5 +1,10 @@
+global:
+  greptime:
+    databaseName: public
+
 greptimedb-standalone:
   enabled: false
+  databaseName: public
   fullnameOverride: mdai-greptimedb
   extraVolumeMounts:
     - mountPath: /etc/greptimedb/auth
@@ -12,7 +17,6 @@ greptimedb-standalone:
         secretName: greptimedb-users-auth
   env:
     GREPTIMEDB_STANDALONE__USER_PROVIDER: "static_user_provider:file:/etc/greptimedb/auth/passwd"
-  databaseName: mdai
   ## AWS start
   # objectStorage:
   #   s3:
@@ -83,3 +87,23 @@ etcd:
 
 greptimedb-operator:
   enabled: false
+
+kubeprometheusstack:
+  prometheus:
+    prometheusSpec:
+      remoteWrite:
+        - url: 'http://mdai-greptimedb.mdai.svc.cluster.local:4000/v1/prometheus/write?db={{ .Values.global.greptime.databaseName | default "public" }}'
+          basicAuth:
+            username:
+              name: greptimedb-users-auth
+              key: GREPTIME_USER
+            password:
+              name: greptimedb-users-auth
+              key: GREPTIME_PASSWD
+#          writeRelabelConfigs:
+#            - sourceLabels: [__name__]
+#              regex: '(essential_metric_1|essential_metric_2)'
+#              action: keep
+#            - sourceLabels: [ __meta_kubernetes_namespace ]
+#              regex: 'mdai'
+#              action: keep
