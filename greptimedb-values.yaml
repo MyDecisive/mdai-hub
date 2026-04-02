@@ -91,6 +91,17 @@ greptimedb-operator:
 kubeprometheusstack:
   prometheus:
     prometheusSpec:
+      retention: 1m
+      retentionSize: 1MB
+      remoteRead:
+        - url: 'http://mdai-greptimedb.mdai.svc.cluster.local:4000/v1/prometheus/read?db={{ .Values.global.greptime.databaseName | default "public" }}'
+          basicAuth:
+            username:
+              name: greptimedb-users-auth
+              key: GREPTIME_USER
+            password:
+              name: greptimedb-users-auth
+              key: GREPTIME_PASSWD
       remoteWrite:
         - url: 'http://mdai-greptimedb.mdai.svc.cluster.local:4000/v1/prometheus/write?db={{ .Values.global.greptime.databaseName | default "public" }}'
           basicAuth:
