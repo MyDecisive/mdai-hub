@@ -86,6 +86,9 @@ mdai-operator:
         otelExporterOtlpEndpoint: http://hub-monitor-mdai-collector-service.mdai.svc.cluster.local:4318
         otelSdkDisabled: "true"
       tolerations: []
+      image:
+        repository: ghcr.io/mydecisive/mdai-operator
+        tag: 0.2.12-envoy
 
 mdai-gateway:
   enabled: true
