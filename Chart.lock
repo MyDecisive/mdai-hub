@@ -7,7 +7,7 @@ dependencies:
   version: 0.109.0
 - name: kube-prometheus-stack
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 82.14.1
+  version: 83.0.2
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
@@ -22,12 +22,12 @@ dependencies:
   version: 0.2.12-envoy
 - name: mdai-gateway
   repository: oci://ghcr.io/mydecisive/charts
-  version: 0.1.5-octant
+  version: 0.1.8
 - name: mdai-event-hub
-  repository: oci://ghcr.io/mydecisive
+  repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.8
 - name: mdai-s3-logs-reader
-  repository: oci://ghcr.io/mydecisive
+  repository: oci://ghcr.io/mydecisive/charts
   version: 0.0.8
 - name: mdai-tracealyzer
   repository: oci://ghcr.io/mydecisive/charts
