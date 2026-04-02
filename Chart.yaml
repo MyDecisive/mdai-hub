@@ -35,15 +35,15 @@ dependencies:
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-gateway.enabled
   - name: mdai-event-hub
-    repository: oci://ghcr.io/mydecisive
     version: 0.1.8
+    repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-event-hub.enabled
   - name: mdai-s3-logs-reader
     version: 0.0.8
-    repository: oci://ghcr.io/mydecisive
+    repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-s3-logs-reader.enabled
   - name: mdai-envoy-standalone
     alias: envoy
-    repository: oci://ghcr.io/mydecisive/charts
     version: 0.1.0
+    repository: oci://ghcr.io/mydecisive/charts
     condition: envoy.enabled
