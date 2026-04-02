@@ -29,8 +29,5 @@ dependencies:
 - name: mdai-envoy-standalone
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
-- name: mdai-fidelity-validator
-  repository: oci://ghcr.io/mydecisive/charts
-  version: 0.1.0
-digest: sha256:361c50401834119aac6d1e48be359f5542522d3212047507463b4f28042b2f65
-generated: "2026-03-26T09:13:29.213028-07:00"
+digest: sha256:a2113d5624ac9dc9b5061f563054d3a8f88a4ab8f0e902751b52d31e1910a097
+generated: "2026-04-02T08:59:33.036775-07:00"

@@ -47,8 +47,3 @@ dependencies:
     repository: oci://ghcr.io/mydecisive/charts
     version: 0.1.0
     condition: envoy.enabled
-  - name: mdai-fidelity-validator
-    alias: mdaifidelityvalidator
-    repository: oci://ghcr.io/mydecisive/charts
-    version: 0.1.0
-    condition: mdaifidelityvalidator.enabled
