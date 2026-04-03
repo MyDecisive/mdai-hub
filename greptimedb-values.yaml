@@ -102,6 +102,8 @@ kubeprometheusstack:
             password:
               name: greptimedb-users-auth
               key: GREPTIME_PASSWD
+          requiredMatchers:
+            greptime_remote: "true"
       remoteWrite:
         - url: 'http://mdai-greptimedb.mdai.svc.cluster.local:4000/v1/prometheus/write?db={{ .Values.global.greptime.databaseName | default "public" }}'
           basicAuth:
@@ -111,10 +113,9 @@ kubeprometheusstack:
             password:
               name: greptimedb-users-auth
               key: GREPTIME_PASSWD
-#          writeRelabelConfigs:
-#            - sourceLabels: [__name__]
-#              regex: '(essential_metric_1|essential_metric_2)'
-#              action: keep
-#            - sourceLabels: [ __meta_kubernetes_namespace ]
-#              regex: 'mdai'
-#              action: keep
+          writeRelabelConfigs:
+            - sourceLabels: [ job, __name__ ]
+              regex: '(mdai-observer-scrape|mdai-observer-otel-scrape|hub-monitor-scrape|otel-collector);.*|.*;(kube_pod_.*|container_.*|node_.*|kube_node_.*|process_.*)'
+              action: keep
+            - targetLabel: greptime_remote
+              replacement: "true"
