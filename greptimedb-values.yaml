@@ -1,11 +1,11 @@
 global:
   greptime:
     databaseName: public
+    nameOverride: ""
+    fullnameOverride: mdai-greptimedb
 
 greptimedb-standalone:
   enabled: false
-  databaseName: public
-  fullnameOverride: mdai-greptimedb
   extraVolumeMounts:
     - mountPath: /etc/greptimedb/auth
       name: auth
@@ -94,7 +94,7 @@ kubeprometheusstack:
       retention: 1m
       retentionSize: 1MB
       remoteRead:
-        - url: 'http://mdai-greptimedb.mdai.svc.cluster.local:4000/v1/prometheus/read?db={{ .Values.global.greptime.databaseName | default "public" }}'
+        - url: 'http://{{ .Values.global.greptime.fullnameOverride | default "mdai-greptimedb" }}.{{ .Release.Namespace }}.svc.cluster.local:4000/v1/prometheus/read?db={{ .Values.global.greptime.databaseName | default "public" }}'
           basicAuth:
             username:
               name: greptimedb-users-auth
@@ -105,7 +105,7 @@ kubeprometheusstack:
           requiredMatchers:
             greptime_remote: "true"
       remoteWrite:
-        - url: 'http://mdai-greptimedb.mdai.svc.cluster.local:4000/v1/prometheus/write?db={{ .Values.global.greptime.databaseName | default "public" }}'
+        - url: 'http://{{ .Values.global.greptime.fullnameOverride | default "mdai-greptimedb" }}.{{ .Release.Namespace }}.svc.cluster.local:4000/v1/prometheus/write?db={{ .Values.global.greptime.databaseName | default "public" }}'
           basicAuth:
             username:
               name: greptimedb-users-auth
