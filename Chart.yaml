@@ -15,7 +15,7 @@ dependencies:
     condition: opentelemetry-operator.enabled
   - name: kube-prometheus-stack
     alias: kubeprometheusstack
-    version: 82.14.1
+    version: 83.0.2
     repository: oci://ghcr.io/prometheus-community/charts
     condition: kubeprometheusstack.enabled
   - name: metrics-server
@@ -31,7 +31,7 @@ dependencies:
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-operator.enabled
   - name: mdai-gateway
-    version: 0.1.5-octant
+    version: 0.1.8
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-gateway.enabled
   - name: mdai-event-hub

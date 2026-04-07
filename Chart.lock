@@ -7,7 +7,7 @@ dependencies:
   version: 0.109.0
 - name: kube-prometheus-stack
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 82.14.1
+  version: 83.0.2
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
@@ -19,7 +19,7 @@ dependencies:
   version: 0.2.12-envoy
 - name: mdai-gateway
   repository: oci://ghcr.io/mydecisive/charts
-  version: 0.1.5-octant
+  version: 0.1.8
 - name: mdai-event-hub
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.8
@@ -29,5 +29,5 @@ dependencies:
 - name: mdai-envoy-standalone
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
-digest: sha256:8ccbbd500e78a194c09b825cfe366947e29115654adacff0194cbe49e6ae3453
-generated: "2026-04-02T09:46:40.127846-07:00"
+digest: sha256:b106ec5074c5330f51f2beab1037745e7c750120a242d61197648127db8f264a
+generated: "2026-04-07T15:19:44.158487-07:00"
