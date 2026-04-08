@@ -1,6 +1,7 @@
 global:
   greptime:
-    databaseName: mdai
+#   use 'public' unless mentioned database is explicitly created in GreptimeDB
+    databaseName: public
     nameOverride: ""
     fullnameOverride: mdai-greptimedb
 
