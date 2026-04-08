@@ -1,6 +1,6 @@
 global:
   greptime:
-    databaseName: public
+    databaseName: mdai
     nameOverride: ""
     fullnameOverride: mdai-greptimedb
 
@@ -91,8 +91,7 @@ greptimedb-operator:
 kubeprometheusstack:
   prometheus:
     prometheusSpec:
-      retention: 1m
-      retentionSize: 1MB
+      retention: 3h
       remoteRead:
         - url: 'http://{{ .Values.global.greptime.fullnameOverride | default "mdai-greptimedb" }}.{{ .Release.Namespace }}.svc.cluster.local:4000/v1/prometheus/read?db={{ .Values.global.greptime.databaseName | default "public" }}'
           basicAuth:
