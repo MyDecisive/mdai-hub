@@ -146,9 +146,9 @@ kubeprometheusstack:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-          - name: "default"
+          - name: 'default'
             orgId: 1
-            folder: ""
+            folder: ''
             type: file
             disableDeletion: false
             editable: true
@@ -166,16 +166,16 @@ kubeprometheusstack:
         group_wait: 30s
         group_interval: 5m
         repeat_interval: 12h
-        receiver: "mdai-gateway"
+        receiver: 'mdai-gateway'
         routes:
           - matchers:
               - alertname = "Watchdog"
-            receiver: "null"
+            receiver: 'null'
       receivers:
-        - name: "null"
-        - name: "mdai-gateway"
+        - name: 'null'
+        - name: 'mdai-gateway'
           webhook_configs:
-            - url: "http://mdai-gateway.mdai.svc.cluster.local:8081/alerts/alertmanager"
+            - url: 'http://mdai-gateway.mdai.svc.cluster.local:8081/alerts/alertmanager'
               send_resolved: true
     serviceMonitor:
       selfMonitor: true
@@ -243,7 +243,6 @@ kubeprometheusstack:
         cluster: mdai-cluster
       serviceMonitorSelectorNilUsesHelmValues: false
       tolerations: []
-
       ## uncomment below block to enable persistent storage
       ## BEGIN: persistent storage block
       #nodeSelector:
@@ -479,9 +478,9 @@ valkey:
     repository: decisiveai/valkey
     tag: 1.0.2
   auth:
-     enabled: true
-     existingSecret: valkey-secret
-     existingSecretPasswordKey: VALKEY_PASSWORD
+    enabled: true
+    existingSecret: valkey-secret
+    existingSecretPasswordKey: VALKEY_PASSWORD
   global:
     security:
       allowInsecureImages: true
@@ -581,9 +580,9 @@ nats:
         # Uncomment a section below to enable PVCs created
         #  dir: "/data/jetstream"
         pvc:
-          enabled: true
-          storageClassName: gp2
-          #          size: 1Gi # Specify your storage size
+#          enabled: true
+#          storageClassName: gp2 # specify your storage class
+#          size: 1Gi
           merge: # Add apiVersion/kind to avoid ArgoCD drift on implicit fields
             apiVersion: v1
             kind: PersistentVolumeClaim
