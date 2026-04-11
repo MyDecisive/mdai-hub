@@ -1,10 +1,11 @@
+{{- if and .Values.nats.enabled .Values.nats.promExporter.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: nats-metrics
+  name: {{ include "mdai-hub.fullname" . }}-nats-metrics
   labels:
     app.kubernetes.io/name: nats
-    app.kubernetes.io/instance: nats
+    app.kubernetes.io/instance: {{ include "nats.instance" . }}
 spec:
   selector:
     app.kubernetes.io/name: nats
@@ -14,3 +15,4 @@ spec:
     - name: metrics
       port: 7777
       targetPort: 7777
+{{- end }}
