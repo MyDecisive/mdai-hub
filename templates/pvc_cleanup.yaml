@@ -1,8 +1,11 @@
 ---
+{{- $cleanupSAName := printf "%s-pvc-cleanup-sa" (include "mdai-hub.fullname" .) }}
+{{- $cleanupRoleName := printf "%s-pvc-cleanup-role" (include "mdai-hub.fullname" .) }}
+{{- $cleanupBindingName := printf "%s-pvc-cleanup-binding" (include "mdai-hub.fullname" .) }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: pvc-cleanup-sa
+  name: {{ $cleanupSAName }}
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": "post-delete"
@@ -12,7 +15,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: pvc-cleanup-role
+  name: {{ $cleanupRoleName }}
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": "post-delete"
@@ -26,7 +29,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: pvc-cleanup-binding
+  name: {{ $cleanupBindingName }}
   namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": "post-delete"
@@ -34,16 +37,16 @@ metadata:
     "helm.sh/hook-weight": "-5"
 subjects:
   - kind: ServiceAccount
-    name: pvc-cleanup-sa
+    name: {{ $cleanupSAName }}
 roleRef:
   kind: Role
-  name: pvc-cleanup-role
+  name: {{ $cleanupRoleName }}
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Namespace }}-pvc-cleanup
+  name: {{ include "mdai-hub.fullname" . }}-pvc-cleanup
   annotations:
     "helm.sh/hook": "post-delete"
     "helm.sh/hook-delete-policy": "hook-succeeded"
@@ -51,12 +54,12 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: pvc-cleanup-sa
+      serviceAccountName: {{ $cleanupSAName }}
       restartPolicy: Never
       containers:
       - name: delete-pvc
         image: bitnami/kubectl:latest
-        command: ["/bin/bash", "-c"]
+        command: ["/bin/sh", "-c"]
         args:
           - |
             echo "Deleting PVCs for release {{ .Release.Name }}..."

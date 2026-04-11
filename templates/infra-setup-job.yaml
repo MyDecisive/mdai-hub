@@ -1,0 +1,75 @@
+{{- if or .Values.nats.enabled .Values.valkey.enabled }}
+{{- $infraSAName := printf "%s-infra-secret-creator-sa" (include "mdai-hub.fullname" .) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "mdai-hub.fullname" . }}-infra-setup
+  labels:
+    {{- include "mdai-hub.labels" . | nindent 4 }}
+  annotations:
+    "argocd.argoproj.io/sync-wave": "-1"
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "mdai-hub.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ $infraSAName }}
+      restartPolicy: OnFailure
+      containers:
+      - name: setup
+        image: bitnami/kubectl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          {{- if .Values.nats.enabled }}
+          # Setup NATS Secret
+          NATS_SECRET="{{ include "nats.secretName" . }}"
+          NATS_PW_KEY="{{ include "nats.passwordKey" . }}"
+          if ! kubectl get secret "$NATS_SECRET" > /dev/null 2>&1; then
+            echo "Creating NATS secret: $NATS_SECRET"
+            PW=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32)
+            kubectl create secret generic "$NATS_SECRET" --from-literal="$NATS_PW_KEY"="$PW"
+          else
+            echo "NATS secret $NATS_SECRET already exists."
+          fi
+          {{- end }}
+
+          {{- if .Values.valkey.enabled }}
+          # Setup Valkey Secret
+          VALKEY_SECRET="{{ include "valkey.secretName" . }}"
+          VALKEY_PW_KEY="{{ include "valkey.passwordKey" . }}"
+          VALKEY_EP_KEY="{{ include "valkey.endpointKey" . }}"
+          if ! kubectl get secret "$VALKEY_SECRET" > /dev/null 2>&1; then
+            echo "Creating Valkey secret: $VALKEY_SECRET"
+            PW=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32)
+            ENDPOINT="{{ include "valkey.endpoint" . }}"
+            kubectl create secret generic "$VALKEY_SECRET" \
+              --from-literal="$VALKEY_PW_KEY"="$PW" \
+              --from-literal="$VALKEY_EP_KEY"="$ENDPOINT"
+          else
+            echo "Valkey secret $VALKEY_SECRET already exists."
+          fi
+          {{- end }}
+        {{- with .Values.infraSetup.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- with .Values.infraSetup.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.infraSetup.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.infraSetup.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
