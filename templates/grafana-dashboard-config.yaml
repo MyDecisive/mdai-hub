@@ -7,12 +7,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ printf "grafana-dashboard-%s" $key | trunc 63 | trimSuffix "-" }}
+  name: {{ include "mdai-hub.fullname" $parent }}-dashboard-{{ $key | trunc 40 | trimSuffix "-" }}
   namespace: {{ $parent.Release.Namespace }}
   labels:
+    {{- include "mdai-hub.labels" $parent | nindent 4 }}
     grafana_dashboard: "1"
 data:
   {{ $key }}.json: |
-    {{ $parent.Files.Get $filePath | nindent 4 }}
+    {{ $parent.Files.Get $filePath | replace ".mdai.svc.cluster.local" (printf ".%s.svc.cluster.local" $parent.Release.Namespace) | nindent 4 }}
   {{- end }}
 {{- end }}
