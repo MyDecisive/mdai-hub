@@ -101,7 +101,7 @@ persistentStorage:
       # Deployment platform: can be either "aws" or "kind" (for local development))
       platform: kind
       # directory where data will be stored if deployment platform is "kind"
-      localPath: "/Users/username/kind/data"
+      localPath: "/tmp/mdai-data"
 ```
 See comments in the file for more details.
 
@@ -133,7 +133,7 @@ persistentStorage:
       # Deployment platform: can be either "aws" or "kind" (for local development))
       platform: kind
       # directory where data will be stored if deployment platform is "kind"
-      localPath: "/Users/username/kind/data"
+      localPath: "/tmp/mdai-data"
 ```
 See comments in the file for details.
 1. On AWS create 3 EBS volumes of the desired size. Preferably these volumes should reside in different availability zones (but only in those, your EKS cluster run on)
@@ -147,7 +147,7 @@ persistentStorage:
       # Deployment platform: can be either "aws" or "kind" (for local development))
       platform: aws
       # directory where data will be stored if deployment platform is "kind"
-      localPath: "/Users/username/kind/data"
+      localPath: "/tmp/mdai-data"
       # shoudl match the storageClass of the PersistentVolumeClaims
       storageClass: mdai
       size: 1Gi
