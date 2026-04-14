@@ -23,3 +23,16 @@ without_grafana.yaml
 .idea/*
 Makefile
 .github/
+.vscode/
+.codex-tmp/
+.history/
+.DS_Store
+._*
+*.swp
+*.swo
+*~
+./mdai-hub-*.tgz
+scripts/
+test.sh
+config.json
+grafana-values.yaml
