@@ -341,12 +341,14 @@ kubeprometheusstack:
               namespaces:
                 names: ["mdai"]
           relabel_configs:
-            - source_labels: [__meta_kubernetes_pod_label_app, __meta_kubernetes_pod_container_port_number]
+            - source_labels: [__meta_kubernetes_pod_label_hub_mydecisive_ai_role, __meta_kubernetes_pod_container_port_number]
               separator: ;
-              regex: mdai-fidelity-validator;8080
+              regex: telemetry-validation-validator;8888
               action: keep
             - target_label: __metrics_path__
               replacement: /metrics
+            - source_labels: [__meta_kubernetes_pod_label_hub_mydecisive_ai_telemetry_validation]
+              target_label: mdai_connection
   additionalPrometheusRulesMap:
     mdai-rules:
       groups:
