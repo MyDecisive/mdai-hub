@@ -356,7 +356,7 @@ kubeprometheusstack:
           kubernetes_sd_configs:
             - role: pod
           relabel_configs:
-            - source_labels: [__meta_kubernetes_pod_annotation_hub_mydecisive_ai_role, __meta_kubernetes_pod_container_port_number]
+            - source_labels: [__meta_kubernetes_pod_label_hub_mydecisive_ai_role, __meta_kubernetes_pod_container_port_number]
               separator: ;
               regex: connection-collector;8888
               action: keep
