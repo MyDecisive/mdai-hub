@@ -392,7 +392,5 @@ envoy:
     serverPort: 18000
     nodeId: envoy-hub-proxy
     clusterName: mdai-hub
-  metrics:
-    enabled: true
   serviceMonitor:
     enabled: true
