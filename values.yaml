@@ -1,21 +1,17 @@
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: false
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+_defaults:
+  otlpEndpoint: &otlpEndpoint http://hub-monitor-mdai-collector-service:4318
+  emptyAnnotations: &emptyAnnotations {}
+  emptyTolerations: &emptyTolerations []
 
 persistentStorage:
   nats:
     pv:
       # Specifies whether a PersistentVolumes should be created
       create: false
-      # Deployment platform: can be either "aws" or "kind" (for local development))
+      # Deployment platform: can be either "aws" or "kind" (for local development)
       platform: kind
       # directory where data will be stored if deployment platform is "kind"
-      localPath: "/Users/username/kind/data"
+      localPath: "/tmp/mdai-data"
       # shoudl match the storageClass of the PersistentVolumeClaims
       storageClass: mdai
       size: 1Gi
@@ -44,10 +40,10 @@ opentelemetry-operator:
   manager:
     image:
       repository: ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator
-      tag: 0.131.0
+      tag: 0.148.0
     collectorImage:
       repository: otel/opentelemetry-collector-contrib
-      tag: 0.131.0
+      tag: 0.149.0
     leaderElection:
       enabled: false
     env:
@@ -55,7 +51,7 @@ opentelemetry-operator:
       WATCH_NAMESPACE: mdai
   kubeRBACProxy:
     enabled: false
-  tolerations: []
+  tolerations: *emptyTolerations
 
 metrics-server:
   enabled: false
@@ -83,27 +79,30 @@ mdai-operator:
   controllerManager:
     manager:
       env:
-        otelExporterOtlpEndpoint: http://hub-monitor-mdai-collector-service.mdai.svc.cluster.local:4318
+        otelExporterOtlpEndpoint: *otlpEndpoint
         otelSdkDisabled: "true"
-      tolerations: []
+      tolerations: *emptyTolerations
+      image:
+        repository: ghcr.io/mydecisive/mdai-operator
+        tag: 0.2.12-envoy
 
 mdai-gateway:
   enabled: true
-  otelExporterOtlpEndpoint: http://hub-monitor-mdai-collector-service.mdai.svc.cluster.local:4318
+  otelExporterOtlpEndpoint: *otlpEndpoint
   otelSdkDisabled: true
   deployment:
-    annotations: {}
-    tolerations: []
+    annotations: *emptyAnnotations
+    tolerations: *emptyTolerations
 
 mdai-event-hub:
   enabled: true
   otelSdkDisabled: true
-  otelExporterOtlpEndpoint: http://hub-monitor-mdai-collector-service.mdai.svc.cluster.local:4318
+  otelExporterOtlpEndpoint: *otlpEndpoint
   hopLimit: 2
   deployment:
     replicas: 1 # adjust as per your requirement, 1 - 3 replicas recommended
-    annotations: { }
-    tolerations: []
+    annotations: *emptyAnnotations
+    tolerations: *emptyTolerations
 
 mdai-s3-logs-reader:
   enabled: false
@@ -111,8 +110,8 @@ mdai-s3-logs-reader:
   s3Bucket: "mdai-collector-logs"
   awsAccessKeySecret: aws-credentials
   deployment:
-    annotations: {}
-    tolerations: []
+    annotations: *emptyAnnotations
+    tolerations: *emptyTolerations
 
 kubeprometheusstack:
   nameOverride: kube-prometheus-stack
@@ -127,7 +126,7 @@ kubeprometheusstack:
       monitor:
         enabled: false
   grafana:
-    enabled: true
+    enabled: false
     defaultDashboardsEnabled: false
     adminPassword: mdai
     plugins:
@@ -159,7 +158,7 @@ kubeprometheusstack:
   alertmanager:
     enabled: true
     alertmanagerSpec:
-      tolerations: []
+      tolerations: *emptyTolerations
     config:
       route:
         group_by: ["cluster", "alertname"]
@@ -223,56 +222,29 @@ kubeprometheusstack:
       enabled: true
     serviceMonitor:
       selfMonitor: false
-    tolerations: []
+    tolerations: *emptyTolerations
   prometheus:
     serviceMonitor:
       selfMonitor: false
-    additionalServiceMonitors:
-      - name: nats-exporter
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: nats
-            app.kubernetes.io/instance: nats
-        endpoints:
-          - port: metrics
-            path: /metrics
-            interval: 30s
-            scrapeTimeout: 10s
     prometheusSpec:
       externalLabels:
         cluster: mdai-cluster
+      serviceMonitorSelector: {}
+      serviceMonitorNamespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: "{{ .Release.Namespace }}"
+      podMonitorSelector: {}
+      podMonitorNamespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: "{{ .Release.Namespace }}"
+      ruleSelector: {}
+      ruleNamespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: "{{ .Release.Namespace }}"
       serviceMonitorSelectorNilUsesHelmValues: false
-      tolerations: []
-      ## uncomment below block to enable persistent storage
-      ## BEGIN: persistent storage block
-      #nodeSelector:
-      #  topology.kubernetes.io/zone: us-east-1a
-      #securityContext:
-      #  fsGroup: 65534
-      #  runAsGroup: 65534
-      #  runAsNonRoot: true
-      #  runAsUser: 65534
-      #initContainers:
-      #- name: prometheus-data-permission-setup
-      #  image: busybox
-      #  securityContext:
-      #    runAsGroup: 0
-      #    runAsNonRoot: false
-      #    runAsUser: 0
-      #  command: ["/bin/chown","-R","65534:65534","/prometheus"]
-      #  volumeMounts:
-      #  - name: prometheus-kube-prometheus-stack-prometheus-db
-      #    mountPath: /prometheus
-      #storageSpec:
-      #  volumeClaimTemplate:
-      #    spec:
-      #      storageClassName: gp2
-      #      accessModes: ["ReadWriteOnce"]
-      #      volumeName: pv-prometheus
-      #      resources:
-      #        requests:
-      #          storage: 10Gi
-      ## END: persistent storage block
+      podMonitorSelectorNilUsesHelmValues: false
+      tolerations: *emptyTolerations
+      # See PV.md for a persistent storage example.
       ruleSelectorNilUsesHelmValues: false
       additionalArgs:
       - name: enable-feature
@@ -287,17 +259,6 @@ kubeprometheusstack:
         tag: v2.54.1
         sha: ""
       additionalScrapeConfigs:
-        - job_name: otel-collector
-          honor_labels: true
-          tls_config:
-            insecure_skip_verify: true
-          kubernetes_sd_configs:
-            - role: pod
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component, __meta_kubernetes_pod_annotation_prometheus_io_scrape, __meta_kubernetes_pod_container_port_number]
-              separator: ;
-              regex: opentelemetry-collector;true;8888
-              action: keep
         - job_name: mdai-observer-scrape
           honor_labels: true
           tls_config:
@@ -331,214 +292,28 @@ kubeprometheusstack:
               separator: ;
               regex: hub-monitor-mdai-collector;8899
               action: keep
-  additionalPrometheusRulesMap:
-    mdai-rules:
-      groups:
-        - name: "k8s.rules.container_cpu_usage_seconds_total"
-          rules:
-            - expr: |
-                sum by (cluster, namespace, pod, container) (
-                  irate(container_cpu_usage_seconds_total{job="kubelet", image!=""}[5m])
-                ) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
-                  1, max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
-                )
-              record: "node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate"
-        - name: "k8s.rules.container_memory_working_set_bytes"
-          rules:
-            - expr: |
-                container_memory_working_set_bytes{job="kubelet", image!=""}
-                * on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
-                  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
-                )
-              record: "node_namespace_pod_container:container_memory_working_set_bytes"
-        - name: "k8s.rules.container_memory_rss"
-          rules:
-            - expr: |
-                container_memory_rss{job="kubelet", image!=""}
-                * on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
-                  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
-                )
-              record: "node_namespace_pod_container:container_memory_rss"
-        - name: "k8s.rules.container_memory_cache"
-          rules:
-            - expr: |
-                container_memory_cache{job="kubelet", image!=""}
-                * on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
-                  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
-                )
-              record: "node_namespace_pod_container:container_memory_cache"
-        - name: "k8s.rules.container_memory_swap"
-          rules:
-            - expr: |
-                container_memory_swap{job="kubelet", image!=""}
-                * on (cluster, namespace, pod) group_left(node) topk by(cluster, namespace, pod) (1,
-                  max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
-                )
-              record: "node_namespace_pod_container:container_memory_swap"
-        - name: "k8s.rules.container_memory_requests"
-          rules:
-            - expr: |
-                kube_pod_container_resource_requests{resource="memory",job="kubelet"}  * on (namespace, pod)
-                group_left() max by (namespace, pod) (
-                  (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
-                )
-              record: "cluster:namespace:pod_memory:active:kube_pod_container_resource_requests"
-            - expr: |
-                sum by (namespace) (
-                    sum by (namespace, pod) (
-                        max by (namespace, pod, container) (
-                          kube_pod_container_resource_requests{resource="memory",job="kubelet"}
-                        ) * on(namespace, pod) group_left() max by (namespace, pod) (
-                          kube_pod_status_phase{phase=~"Pending|Running"} == 1
-                        )
-                    )
-                )
-              record: "namespace_memory:kube_pod_container_resource_requests:sum"
-        - name: "k8s.rules.container_cpu_requests"
-          rules:
-            - expr: |
-                kube_pod_container_resource_requests{resource="cpu",job="kubelet"}  * on (namespace, pod)
-                group_left() max by (namespace, pod) (
-                  (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
-                )
-              record: "cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests"
-            - expr: |
-                sum by (namespace) (
-                    sum by (namespace, pod) (
-                        max by (namespace, pod, container) (
-                          kube_pod_container_resource_requests{resource="cpu",job="kubelet"}
-                        ) * on(namespace, pod) group_left() max by (namespace, pod) (
-                          kube_pod_status_phase{phase=~"Pending|Running"} == 1
-                        )
-                    )
-                )
-              record: "namespace_cpu:kube_pod_container_resource_requests:sum"
-        - name: "k8s.rules.container_memory_limits"
-          rules:
-            - expr: |
-                kube_pod_container_resource_limits{resource="memory",job="kubelet"}  * on (namespace, pod)
-                group_left() max by (namespace, pod) (
-                  (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
-                )
-              record: "cluster:namespace:pod_memory:active:kube_pod_container_resource_limits"
-            - expr: |
-                sum by (namespace) (
-                    sum by (namespace, pod) (
-                        max by (namespace, pod, container) (
-                          kube_pod_container_resource_limits{resource="memory",job="kubelet"}
-                        ) * on(namespace, pod) group_left() max by (namespace, pod) (
-                          kube_pod_status_phase{phase=~"Pending|Running"} == 1
-                        )
-                    )
-                )
-              record: "namespace_memory:kube_pod_container_resource_limits:sum"
-        - name: "k8s.rules.container_cpu_limits"
-          rules:
-            - expr: |
-                kube_pod_container_resource_limits{resource="cpu",job="kubelet"}  * on (namespace, pod)
-                group_left() max by (namespace, pod) (
-                (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
-                )
-              record: "cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits"
-            - expr: |
-                sum by (namespace) (
-                    sum by (namespace, pod) (
-                        max by (namespace, pod, container) (
-                          kube_pod_container_resource_limits{resource="cpu",job="kubelet"}
-                        ) * on(namespace, pod) group_left() max by (namespace, pod) (
-                          kube_pod_status_phase{phase=~"Pending|Running"} == 1
-                        )
-                    )
-                )
-              record: "namespace_cpu:kube_pod_container_resource_limits:sum"
-
 valkey:
   enabled: true
   image:
     registry: public.ecr.aws
     repository: decisiveai/valkey
-    tag: 1.0.2
+    tag: 9.0.1
   auth:
     enabled: true
-    existingSecret: valkey-secret
-    existingSecretPasswordKey: VALKEY_PASSWORD
-  global:
-    security:
-      allowInsecureImages: true
-  primary:
-    ## uncomment below block to enable persistent storage
-    ## BEGIN: persistent storage block
-    #nodeSelector:
-    #  topology.kubernetes.io/zone: us-east-1a
-    #initContainers:
-    #- command:
-    #  - /bin/chown
-    #  - -R
-    #  - 1001:1001
-    #  - /data
-    #  image: busybox
-    #  name: valkey-data-permission-setup
-    #  securityContext:
-    #    runAsGroup: 0
-    #    runAsNonRoot: false
-    #    runAsUser: 0
-    #  volumeMounts:
-    #  - mountPath: /data
-    #    name: valkey-data
-    ## END: persistent storage block
-    replicaCount: 1
-    persistence:
-      enabled: false
-      ## uncomment below block to enable persistent storage
-      ## BEGIN: persistent storage block
-      #enabled: true
-      #size: 10Gi
-      #existingClaim: pvc-valkey
-      ## END: persistent storage block
-    disableCommands:
-      - FLUSHDB
-      - FLUSHALL
-    configuration: |-
-      notify-keyspace-events KEA
-      enable-module-command yes
-      loadmodule /opt/bitnami/valkey/modules/priority_list.so
-      loadmodule /opt/bitnami/valkey/modules/hashset.so
-    service:
-      type: ClusterIP
-      ports:
-        valkey: 6379
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "100m"
-      limits:
-        memory: "128Mi"
-        cpu: "200m"
-    tolerations: []
-  replica:
-    configuration: |-
-      notify-keyspace-events KEA
-      enable-module-command yes
-      loadmodule /opt/bitnami/valkey/modules/priority_list.so
-      loadmodule /opt/bitnami/valkey/modules/hashset.so
-    replicaCount: 0
-    persistence:
-      enabled: false
-    disableCommands:
-      - FLUSHDB
-      - FLUSHALL
-    service:
-      type: ClusterIP
-      ports:
-        valkey: 6379
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "100m"
-      limits:
-        memory: "128Mi"
-        cpu: "200m"
-    tolerations: []
+    aclUsers:
+      default:
+        permissions: "~* &* +@all"
+        passwordKey: "VALKEY_PASSWORD"      # Key in usersExistingSecret (defaults to username)
+    usersExistingSecret: valkey-secret
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "100m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
+  tolerations: *emptyTolerations
+  # See PV.md for a persistent storage example.
 
 # default NATS setup is very minimal and aim at saving resources and ensuring basic functionality.
 # adjust according to your specific needs.
@@ -547,7 +322,11 @@ nats:
   enabled: true
   promExporter:
     enabled: true
+    podMonitor:
+      enabled: true
   config:
+    monitor:
+      enabled: true
     cluster:
       enabled: true
       replicas: 3
@@ -582,7 +361,6 @@ nats:
           secretKeyRef:
             name: nats-secret
             key: NATS_PASSWORD
-
   podTemplate:
     merge:
       spec:
@@ -597,8 +375,22 @@ nats:
         spec:
           tolerations: []
 
-crdMetadata:
-  fieldValue: ""
+infraSetup:
+  resources: {}
+  tolerations: *emptyTolerations
+  nodeSelector: {}
+  affinity: {}
 
 cleanup:
-  tolerations: []
+  tolerations: *emptyTolerations
+
+envoy:
+  enabled: true
+  xds:
+    enabled: true
+    serverAddress: mdai-operator-xds-service.mdai.svc.cluster.local
+    serverPort: 18000
+    nodeId: envoy-hub-proxy
+    clusterName: mdai-hub
+  serviceMonitor:
+    enabled: true
