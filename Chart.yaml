@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
 name: mdai-hub
-version: "0.9.0-dev"
+version: "0.9.3-dev"
 description: MDAI Hub helm chart
-appVersion: "0.9.0-dev"
+appVersion: "0.9.3-dev"
 dependencies:
   - name: nats
     version: ~1.3.9
@@ -26,6 +26,10 @@ dependencies:
     version: ~2.2.0
     repository: oci://registry-1.docker.io/bitnamicharts
     condition: valkey.enabled
+  - name: greptimedb-standalone
+    version: 0.3.5
+    repository: https://greptimeteam.github.io/helm-charts
+    condition: greptimedb-standalone.enabled
   - name: mdai-operator
     version: 0.2.9
     repository: oci://ghcr.io/mydecisive
