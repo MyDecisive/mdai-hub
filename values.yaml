@@ -624,9 +624,3 @@ cleanup:
 
 greptimedb-standalone:
   enabled: false
-
-greptimedb-cluster:
-  enabled: false
-
-greptimedb-operator:
-  enabled: false

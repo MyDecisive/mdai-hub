@@ -21,31 +21,6 @@ helm upgrade \
   --set greptimedb-standalone.enabled=true mdai .
 ```  
 
-### Cluster
-
-Install GreptimeDb operator:  
-```bash
-helm upgrade \
-  --install \
-  --create-namespace \
-  greptimedb-operator greptimedb-operator \
-  --repo https://greptimeteam.github.io/helm-charts/ \
-  -namespace mdai
-```
-
-Install MDAI with GreptimeDB:
-
-```bash
-helm upgrade \
-  --install \
-  --namespace mdai \
-  --create-namespace \
-  --cleanup-on-fail \
-  --devel \ 
-  --values greptimedb-values.yaml \
-  --set greptimedb-cluster.enabled=true \
-   mdai .
-```  
 
 ## AWS EKS installation
 
@@ -95,63 +70,4 @@ greptimedb-standalone:
 Run:  
 ```bash
 helm upgrade --install --namespace mdai --create-namespace --cleanup-on-fail --devel  --set greptimedb-standalone.enabled=true mdai .
-```
-
-
-
-
-### Cluster
-
-Use terraform variables (input & output) values in [values.greptimedb.yaml](./values.greptimedb.yaml):  
-```yaml
-greptimedb-cluster:
-  enabled: false
-  meta:
-    backendStorage:
-      etcd:
-        endpoints:
-          - mdai-etcd.mdai.svc.cluster.local:2379
-    readinessProbe:
-      initialDelaySeconds: 40
-## AWS start
-  objectStorage:
-    s3:
-      bucket: mdai-greptime-object-storage # <- bucket_name
-      endpoint: s3.us-east-2.amazonaws.com # <- aws_region
-      region: us-east-2 # <- aws_region
-      root: ""
-  datanode:
-    storage:
-      storageClassName: gp2
-      size: 20G # <- ibucket_size_gb
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::1234556789012:role/greptime-irsa-mdai-greptime-test # <- iam_role_arn
-      create: true
-      name: greptimedb-cluster
-## AWS end
-```
-
- 
-### Install
- 
-Install GreptimeDb operator:  
-```bash
-helm upgrade \
-  --install \
-  --create-namespace \
-  greptimedb-operator greptime/greptimedb-operator \
-  --repo https://greptimeteam.github.io/helm-charts/ \
-  -n mdai
-```
-
-```bash
-helm upgrade \
-  --install \
-  --namespace mdai \
-  --create-namespace \
-  --cleanup-on-fail \
-  --devel \ 
-  --values greptimedb-values.yaml \
-  --set greptimedb-cluster.enabled=true mdai .
 ```

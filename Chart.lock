@@ -17,15 +17,6 @@ dependencies:
 - name: greptimedb-standalone
   repository: https://greptimeteam.github.io/helm-charts
   version: 0.3.5
-- name: greptimedb-operator
-  repository: https://greptimeteam.github.io/helm-charts
-  version: 0.5.8
-- name: etcd
-  repository: oci://registry-1.docker.io/bitnamicharts
-  version: 12.0.8
-- name: greptimedb-cluster
-  repository: https://greptimeteam.github.io/helm-charts
-  version: 0.7.9
 - name: mdai-operator
   repository: oci://ghcr.io/mydecisive
   version: 0.2.9
@@ -38,5 +29,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-digest: sha256:be8d04c7b768a518ece464e93243417ad184c0cbb8d8f5933288a47bd4e92c8b
-generated: "2026-04-24T13:09:49.864766-04:00"
+digest: sha256:615ebf4fa5c1b9e9deaa3363bd4ee6a4f176e09446aa85ec8fa81134bb8a30b8
+generated: "2026-04-24T13:28:12.966034-04:00"
