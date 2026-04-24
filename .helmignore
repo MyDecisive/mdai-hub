@@ -13,7 +13,6 @@ mdai-cluster-*.tgz
 files/example_collector.yaml
 files/example2_collector.yaml
 files/greptimedb/*
-files/thanos/*
 example_log_generator.yaml
 example_log_generator_noisy_service.yaml
 example_log_generator_xtra_noisy_service.yaml

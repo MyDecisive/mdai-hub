@@ -38,8 +38,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-- name: thanos
-  repository: oci://registry-1.docker.io/bitnamicharts
-  version: 17.3.1
-digest: sha256:f53574957ef0c3f9c49972322ba5f3fba8d6afa7d3b982f438fba52c7280507e
-generated: "2026-03-12T18:12:11.887339-04:00"
+digest: sha256:be8d04c7b768a518ece464e93243417ad184c0cbb8d8f5933288a47bd4e92c8b
+generated: "2026-04-24T13:09:49.864766-04:00"
