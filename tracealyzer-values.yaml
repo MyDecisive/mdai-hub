@@ -8,7 +8,7 @@ mdai-tracealyzer:
 
   imagePullSecrets: []
   nameOverride: ""
-  fullnameOverride: ""
+  fullnameOverride: mdai-tracealyzer
 
   serviceAccount:
     create: true
