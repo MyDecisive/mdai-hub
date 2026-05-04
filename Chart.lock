@@ -16,7 +16,7 @@ dependencies:
   version: 0.9.3
 - name: mdai-operator
   repository: oci://ghcr.io/mydecisive/charts
-  version: 0.2.12-envoy
+  version: 0.2.13
 - name: mdai-gateway
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.8
@@ -29,5 +29,5 @@ dependencies:
 - name: mdai-envoy-standalone
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
-digest: sha256:b106ec5074c5330f51f2beab1037745e7c750120a242d61197648127db8f264a
-generated: "2026-04-23T14:06:44.111124-07:00"
+digest: sha256:f4d329aa039c5efc5711cc7336dc7541bc150eb201c394a0f5be7a98d46b8bb4
+generated: "2026-05-04T16:23:41.353462-05:00"
