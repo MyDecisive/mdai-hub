@@ -46,3 +46,7 @@ dependencies:
     version: 0.0.8
     repository: oci://ghcr.io/mydecisive
     condition: mdai-s3-logs-reader.enabled
+  - name: mdai-tracealyzer
+    version: 0.1.0
+    repository: file://../mdai-tracealyzer/deployment
+    condition: mdai-tracealyzer.enabled
