@@ -39,3 +39,4 @@ kubeprometheusstack:
         mdai-cluster-usage: {}   #files/dashboards/mdai-cluster-usage.json
         mdai-audit-streams: {}   #files/dashboards/mdai-audit-streams.json
         controller-runtime-metrics: {}   #files/dashboards/controller-runtime-metrics.json
+        tracealyzer-operational: {}   #files/dashboards/tracealyzer-operational.json
