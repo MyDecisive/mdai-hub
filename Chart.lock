@@ -14,6 +14,9 @@ dependencies:
 - name: valkey
   repository: oci://ghcr.io/valkey-io/valkey-helm
   version: 0.9.3
+- name: greptimedb-standalone
+  repository: https://greptimeteam.github.io/helm-charts
+  version: 0.3.5
 - name: mdai-operator
   repository: oci://ghcr.io/mydecisive
   version: 0.2.10
@@ -26,5 +29,5 @@ dependencies:
 - name: mdai-s3-logs-reader
   repository: oci://ghcr.io/mydecisive
   version: 0.0.8
-digest: sha256:77bc2dbc8d0dfb028062d35c5bd887c33e04e4b1d43ecf876e76cd0c2bb8ddbf
-generated: "2026-03-03T10:53:26.746453-07:00"
+digest: sha256:f64399494a905fd8364d2c91d38fd98c3b14327f3c8b052345c293a4b0150297
+generated: "2026-05-04T17:54:32.972071-07:00"
