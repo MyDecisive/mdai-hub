@@ -27,7 +27,7 @@ mdai-tracealyzer:
       metrics: 9090
 
   serviceMonitor:
-    enabled: false
+    enabled: true
     namespace: ""
     labels: {}
     path: /metrics
