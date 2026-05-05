@@ -49,8 +49,14 @@ opentelemetry-operator:
     env:
       ENABLE_WEBHOOKS: "true"
       WATCH_NAMESPACE: mdai
-  kubeRBACProxy:
-    enabled: false
+    ports:
+      metricsPort: 8080
+    metrics:
+      secure: false
+    serviceMonitor:
+      enabled: true
+      metricsEndpoints:
+        - port: metrics
   tolerations: *emptyTolerations
 
 metrics-server:
