@@ -18,6 +18,7 @@ data:
   GREPTIME_USER: {{ (index .Subcharts "greptimedb-standalone").Values.postgresUser | default "mdai" | b64enc | quote }}
   GREPTIME_PASSWD: {{ $greptimePassword | b64enc | quote }}
   GREPTIME_HOST: {{ printf "%s-greptimedb.%s.svc.cluster.local" .Release.Name .Release.Namespace | b64enc | quote }}
-  GREPTIME_PORT: {{ (index .Subcharts "greptimedb-standalone").Values.postgresServicePort | toString | default "4003" | b64enc | quote }}
+  GREPTIME_PSQL_PORT: {{ (index .Subcharts "greptimedb-standalone").Values.postgresServicePort | toString | default "4003" | b64enc | quote }}
+  GREPTIME_MYSQL_PORT: {{ (index .Subcharts "greptimedb-standalone").Values.mysqlServicePort | toString | default "4002" | b64enc | quote }}
   GREPTIME_DATABASE: {{ (index .Subcharts "greptimedb-standalone").Values.databaseName | default "public" | b64enc | quote }}
 
