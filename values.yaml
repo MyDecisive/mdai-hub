@@ -624,3 +624,6 @@ cleanup:
 
 greptimedb-standalone:
   enabled: false
+
+mdai-tracealyzer:
+  enabled: false
