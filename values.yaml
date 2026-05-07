@@ -88,9 +88,6 @@ mdai-operator:
         otelExporterOtlpEndpoint: *otlpEndpoint
         otelSdkDisabled: "true"
       tolerations: *emptyTolerations
-      image:
-        repository: ghcr.io/mydecisive/mdai-operator
-        tag: 0.2.12-envoy
 
 mdai-gateway:
   enabled: true
