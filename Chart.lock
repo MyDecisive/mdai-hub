@@ -1,36 +1,39 @@
 dependencies:
 - name: nats
   repository: https://nats-io.github.io/k8s/helm/charts/
-  version: 1.3.16
+  version: 2.12.6
 - name: opentelemetry-operator
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.95.3
+  version: 0.111.0
 - name: kube-prometheus-stack
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 77.6.2
+  repository: oci://ghcr.io/prometheus-community/charts
+  version: 84.5.0
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
-  version: 3.12.2
+  version: 3.13.0
 - name: valkey
-  repository: oci://registry-1.docker.io/bitnamicharts
-  version: 2.2.4
+  repository: oci://ghcr.io/valkey-io/valkey-helm
+  version: 0.9.4
 - name: greptimedb-standalone
   repository: https://greptimeteam.github.io/helm-charts
-  version: 0.3.5
+  version: 0.4.2
 - name: mdai-operator
-  repository: oci://ghcr.io/mydecisive
-  version: 0.2.9
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.2.14
 - name: mdai-gateway
-  repository: oci://ghcr.io/mydecisive
-  version: 0.1.5
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.1.8
 - name: mdai-event-hub
-  repository: oci://ghcr.io/mydecisive
+  repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.8
 - name: mdai-s3-logs-reader
-  repository: oci://ghcr.io/mydecisive
+  repository: oci://ghcr.io/mydecisive/charts
   version: 0.0.8
 - name: mdai-tracealyzer
   repository: oci://ghcr.io/mydecisive/charts
   version: 0.1.0
-digest: sha256:7447f395dd65e0a7a7882d133843238f89f2a3371ac9f9e77f36148eee55c800
-generated: "2026-05-05T14:49:31.456785-04:00"
+- name: mdai-envoy-standalone
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.1.0
+digest: sha256:ff9bb529890c960060ae14b18eb8f92ffd650658bddc0c4e101f2e842a29758a
+generated: "2026-05-07T12:30:26.646339-07:00"
