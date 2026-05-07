@@ -234,16 +234,25 @@ kubeprometheusstack:
         cluster: mdai-cluster
       serviceMonitorSelector: {}
       serviceMonitorNamespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: "{{ .Release.Namespace }}"
+        matchExpressions:
+          - key: kubernetes.io/metadata.name
+            operator: In
+            values:
+              - "{{ .Release.Namespace }}"
       podMonitorSelector: {}
       podMonitorNamespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: "{{ .Release.Namespace }}"
+        matchExpressions:
+          - key: kubernetes.io/metadata.name
+            operator: In
+            values:
+              - "{{ .Release.Namespace }}"
       ruleSelector: {}
       ruleNamespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: "{{ .Release.Namespace }}"
+        matchExpressions:
+          - key: kubernetes.io/metadata.name
+            operator: In
+            values:
+              - "{{ .Release.Namespace }}"
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       tolerations: *emptyTolerations
