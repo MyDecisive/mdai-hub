@@ -16,7 +16,7 @@ helm upgrade \
   --namespace mdai \
   --create-namespace \
   --cleanup-on-fail \
-  --devel \ 
+  --devel \
   --values greptimedb-values.yaml \
   --set greptimedb-standalone.enabled=true mdai .
 ```  

@@ -1,9 +1,9 @@
 apiVersion: v2
 type: application
 name: mdai-hub
-version: "0.9.3-dev"
+version: "0.10.0-dev"
 description: MDAI Hub helm chart
-appVersion: "0.9.3-dev"
+appVersion: "0.10.0-dev"
 dependencies:
   - name: nats
     version: 2.12.6
@@ -51,3 +51,7 @@ dependencies:
     version: 0.1.0
     repository: oci://ghcr.io/mydecisive/charts
     condition: envoy.enabled
+  - name: mdai-tracealyzer
+    version: 0.1.0
+    repository: oci://ghcr.io/mydecisive/charts
+    condition: mdai-tracealyzer.enabled
