@@ -262,6 +262,22 @@ kubeprometheusstack:
         tag: v2.54.1
         sha: ""
       additionalScrapeConfigs:
+        - job_name: otel-collector
+          honor_labels: true
+          tls_config:
+            insecure_skip_verify: true
+          kubernetes_sd_configs:
+            - role: pod
+          relabel_configs:
+            - source_labels:
+                [
+                  __meta_kubernetes_pod_label_app_kubernetes_io_component,
+                  __meta_kubernetes_pod_annotation_prometheus_io_scrape,
+                  __meta_kubernetes_pod_container_port_number,
+                ]
+              separator: ;
+              regex: opentelemetry-collector;true;8888
+              action: keep
         - job_name: mdai-observer-scrape
           honor_labels: true
           tls_config:
