@@ -420,3 +420,6 @@ envoy:
     clusterName: mdai-hub
   serviceMonitor:
     enabled: true
+
+mdai-tracealyzer:
+  enabled: false

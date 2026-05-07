@@ -55,3 +55,7 @@ dependencies:
     version: 0.1.0
     repository: oci://ghcr.io/mydecisive/charts
     condition: envoy.enabled
+  - name: mdai-tracealyzer
+    version: 0.1.0
+    repository: oci://ghcr.io/mydecisive/charts
+    condition: mdai-tracealyzer.enabled

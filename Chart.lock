@@ -37,3 +37,8 @@ dependencies:
   version: 0.1.0
 digest: sha256:ab94e85111d27af29b0d8ce7c50d2b258b9962ea55b14ba5cdc93f5e2db5159a
 generated: "2026-05-04T18:02:04.539575-07:00"
+- name: mdai-tracealyzer
+  repository: oci://ghcr.io/mydecisive/charts
+  version: 0.1.0
+digest: sha256:7447f395dd65e0a7a7882d133843238f89f2a3371ac9f9e77f36148eee55c800
+generated: "2026-05-05T14:49:31.456785-04:00"
