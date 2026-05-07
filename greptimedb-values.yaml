@@ -62,7 +62,7 @@ kubeprometheusstack:
               key: GREPTIME_PASSWD
           writeRelabelConfigs:
             - sourceLabels: [ job, __name__ ]
-              regex: '(mdai-observer-scrape|mdai-observer-otel-scrape|hub-monitor-scrape|otel-collector);.*|.*;(kube_pod_.*|container_.*|node_.*|kube_node_.*|process_.*)'
+              regex: '((mdai-observer-scrape|mdai-observer-otel-scrape|hub-monitor-scrape|otel-collector)|.*(-sampling-lb-collector|-trace-sampling-collector).*);.*|.*;(kube_pod_.*|container_.*|node_.*|kube_node_.*|process_.*)'
               action: keep
             - targetLabel: greptime_remote
               replacement: "true"
