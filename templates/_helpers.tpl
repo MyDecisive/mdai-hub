@@ -72,6 +72,59 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 {{- end }}
 
+{{- define "greptimedb.secretName" -}}
+{{- $cfg := index .Values "greptimedb-standalone" -}}
+{{- $name := "greptimedb-users-auth" -}}
+{{- if and $cfg $cfg.extraVolumes (gt (len $cfg.extraVolumes) 0) -}}
+{{- $first := index $cfg.extraVolumes 0 -}}
+{{- if and $first.secret $first.secret.secretName -}}
+  {{- $name = $first.secret.secretName -}}
+{{- end -}}
+{{- end -}}
+{{- $name -}}
+{{- end -}}
+
+
+{{- define "greptimedb.user" -}}
+{{- $cfg := index .Values "greptimedb-standalone" -}}
+{{- $user := "mdai" -}}
+{{- if and $cfg $cfg.postgresUser -}}
+{{- $user = $cfg.postgresUser -}}
+{{- end -}}
+{{- $user -}}
+{{- end -}}
+
+{{- define "greptimedb.host" -}}
+{{- printf "%s-greptimedb.%s.svc.cluster.local" .Release.Name .Release.Namespace -}}
+{{- end -}}
+
+{{- define "greptimedb.psqlPort" -}}
+{{- $cfg := index .Values "greptimedb-standalone" -}}
+{{- $port := "4003" -}}
+{{- if and $cfg $cfg.postgresServicePort -}}
+{{- $port = printf "%v" $cfg.postgresServicePort -}}
+{{- end -}}
+{{- $port -}}
+{{- end -}}
+
+{{- define "greptimedb.mysqlPort" -}}
+{{- $cfg := index .Values "greptimedb-standalone" -}}
+{{- $port := "4002" -}}
+{{- if and $cfg $cfg.mysqlServicePort -}}
+{{- $port = printf "%v" $cfg.mysqlServicePort -}}
+{{- end -}}
+{{- $port -}}
+{{- end -}}
+
+{{- define "greptimedb.database" -}}
+{{- $cfg := index .Values "greptimedb-standalone" -}}
+{{- $db := "public" -}}
+{{- if and $cfg $cfg.databaseName -}}
+{{- $db = $cfg.databaseName -}}
+{{- end -}}
+{{- $db -}}
+{{- end -}}
+
 {{- define "valkey.endpoint" -}}
 {{- $port := .Values.valkey.service.port | int -}}
 {{- $name := include "valkey.fullname" (dict "Values" .Values.valkey "Release" .Release "Chart" (dict "Name" "valkey")) -}}

@@ -1,4 +1,4 @@
-{{- if or .Values.nats.enabled .Values.valkey.enabled }}
+{{- if or .Values.nats.enabled .Values.valkey.enabled (index .Values "greptimedb-standalone").enabled }}
 {{- $infraSAName := printf "%s-infra-secret-creator-sa" (include "mdai-hub.fullname" .) }}
 apiVersion: batch/v1
 kind: Job
@@ -54,6 +54,32 @@ spec:
               --from-literal="$VALKEY_EP_KEY"="$ENDPOINT"
           else
             echo "Valkey secret $VALKEY_SECRET already exists."
+          fi
+          {{- end }}
+
+          {{- if (index .Values "greptimedb-standalone").enabled }}
+          # Setup GreptimeDB Secret
+          GREPTIME_SECRET="{{ include "greptimedb.secretName" . }}"
+          if ! kubectl get secret $GREPTIME_SECRET > /dev/null 2>&1; then
+            echo "Creating GreptimeDB secret: $GREPTIME_SECRET"
+            PW=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32)
+            AUTH="mdai=${PW}"
+            GREPTIME_DATABASE="{{ include "greptimedb.database" . }}"
+            GREPTIME_HOST="{{ include "greptimedb.host" . }}"
+            GREPTIME_USER="{{ include "greptimedb.user" . }}"
+            GREPTIME_MYSQL_PORT="{{ include "greptimedb.mysqlPort" . }}"
+            GREPTIME_PSQL_PORT="{{ include "greptimedb.psqlPort" . }}"
+            kubectl create secret generic "$GREPTIME_SECRET" \
+              --from-literal="GREPTIME_DATABASE=$GREPTIME_DATABASE" \
+              --from-literal="GREPTIME_HOST=$GREPTIME_HOST" \
+              --from-literal="GREPTIME_USER=$GREPTIME_USER" \
+              --from-literal="GREPTIME_MYSQL_PORT=$GREPTIME_MYSQL_PORT" \
+              --from-literal="GREPTIME_PSQL_PORT=$GREPTIME_PSQL_PORT" \
+              --from-literal="GREPTIME_PASSWD=$PW" \
+              --from-literal="passwd=$AUTH"
+
+          else
+            echo "GreptimeDB secret $GREPTIME_SECRET already exists."
           fi
           {{- end }}
         {{- with .Values.infraSetup.resources }}

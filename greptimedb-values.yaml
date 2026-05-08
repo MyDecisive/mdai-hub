@@ -6,7 +6,6 @@ global:
     fullnameOverride: mdai-greptimedb
 
 greptimedb-standalone:
-  enabled: false
   extraVolumeMounts:
     - mountPath: /etc/greptimedb/auth
       name: auth
