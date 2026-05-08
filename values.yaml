@@ -429,9 +429,6 @@ cleanup:
 greptimedb-standalone:
   enabled: false
 
-mdai-tracealyzer:
-  enabled: false
-
 envoy:
   enabled: true
   xds:
