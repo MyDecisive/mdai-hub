@@ -47,7 +47,7 @@ dependencies:
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-s3-logs-reader.enabled
   - name: mdai-tracealyzer
-    version: 0.1.1-fix
+    version: 0.1.1
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-tracealyzer.enabled
   - name: mdai-envoy-standalone
