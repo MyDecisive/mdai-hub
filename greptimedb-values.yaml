@@ -65,3 +65,4 @@ kubeprometheusstack:
               action: keep
             - targetLabel: greptime_remote
               replacement: "true"
+              action: replace
