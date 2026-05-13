@@ -31,7 +31,7 @@ dependencies:
     repository: https://greptimeteam.github.io/helm-charts
     condition: greptimedb-standalone.enabled
   - name: mdai-operator
-    version: 0.2.14
+    version: 0.2.17
     repository: oci://ghcr.io/mydecisive/charts
     condition: mdai-operator.enabled
   - name: mdai-gateway
